@@ -22,5 +22,6 @@ from project.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^.*', TemplateView.as_view(template_name="home.html"), name="home")
+    url(r'^.*', TemplateView.as_view(template_name="home.html"), name="home"),
+    path('upload/', FileUploadView.as_view(), name="file_upload")
 ]
