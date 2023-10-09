@@ -56,3 +56,7 @@ class DoorOpen(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['timestamp', 'door'], name='unique_timestamp_door_combination')]
+
+class UploadedFile(models.Model):
+    file = models.FileField()
+    
