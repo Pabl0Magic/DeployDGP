@@ -1,0 +1,45 @@
+<div class="my-8 w-5/12 space-y-4">
+  <p class="flex-none inline-block py-2 mb-2 text-4xl rounded-xl text-black>Create a new report">Modifica Sala 1</p>
+</div>
+<div class="flex justify-center items-center">
+  <form class="flex flex-col my-8 w-5/12 space-y-4" [formGroup]="salaForm" (ngSubmit)="onSubmit($event)">  
+    <label class="block mb-2 text-md font-medium text-gray-900" for="name">Nombre de la sala</label>
+    <input class="bg-white border border-gray-300 text-gray-900 sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5" 
+      placeholder="Ejemplo: Laboratorio 412" type="text" formControlName="name" name="size">
+
+    <label class="block mb-2 text-md font-medium text-gray-900" for="size">Tamaño de la sala (m²)</label>
+    <input class="bg-white border border-gray-300 text-gray-900 sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5" 
+      placeholder="Ejemplo: 41" type="number" formControlName="size" name="collectionName">
+    
+    <label class="block mb-2 text-md font-medium text-gray-900" for="doors">Número de puertas</label>
+    <input class="bg-white border border-gray-300 text-gray-900 sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5" 
+      placeholder="Ejemplo: 2" type="number" formControlName="doors" name="reportName">
+
+    <label class="block mb-2 text-md font-medium text-gray-900" for="windows">Número de ventanas</label>
+      <input class="bg-white border border-gray-300 text-gray-900 sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5" 
+        placeholder="Ejemplo: 4" type="number" formControlName="windows" name="reportName">
+    
+    <label class="block mb-2 text-md font-medium text-gray-900" for="lights">Luces</label>
+    <div class="flex justify-between">        
+      <button class="mr-2 border sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5 transition"
+      [ngClass]="{ 'bg-stone-100 border-stone-400 text-stone-500': lightsSelected, 'bg-white text-stone-400 hover:bg-stone-100': !lightsSelected }"
+      [disabled]="lightsSelected" (click)="toggleLuces(true)">Sí</button>
+      <button class="ml-2 border sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5 transition"
+      [ngClass]="{ 'bg-stone-100 border-stone-400 text-stone-500': !lightsSelected, 'bg-white text-stone-400 hover:bg-stone-100': lightsSelected }"
+      [disabled]="!lightsSelected" (click)="toggleLuces(false)">No</button>
+    </div>
+
+    <label class="block mb-2 text-md font-medium text-gray-900" for="ac">Aire acondicionado</label>
+    <div class="flex justify-between">
+      <button class="mr-2 border sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5 transition"
+      [ngClass]="{ 'bg-stone-100 border-stone-400 text-stone-500': acSelected, 'bg-white text-stone-400 hover:bg-stone-100': !acSelected }"
+      [disabled]="acSelected" (click)="toggleAire(true)">Sí</button>
+      <button class="ml-2 border sm:text-md rounded-lg focus:border-primary-600 block w-full p-2.5 transition"
+      [ngClass]="{ 'bg-stone-100 border-stone-400 text-stone-500': !acSelected, 'bg-white text-stone-400 hover:bg-stone-100': acSelected }"
+      [disabled]="!acSelected" (click)="toggleAire(false)">No</button>
+    </div>
+    
+    <input class="block text-center rounded-lg text-white px-3.5 py-2.5 text-md hover:shadow-md transition" 
+    [ngClass]="{ 'bg-zinc-500 cursor-not-allowed': isSubmitting, 'bg-black cursor-pointer': !isSubmitting }" type="submit" value="Crear sala">
+  </form>
+</div>
