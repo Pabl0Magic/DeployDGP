@@ -6,7 +6,7 @@
       </li>
       <li class="mx-8 my-6">
         <a  class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
-            routerLink="new-sala">+ Crear sala</a>
+            routerLink="new-sala" (click)="animateClick()">+ Crear sala</a>
       </li>
       <li class="flex flex-row justify-between mx-8 my-4 bg-stone-50">
         <p class="collection font-medium px-2 bg-stone-50">Salas</p>
@@ -14,13 +14,13 @@
       </li>
       <li class="mx-8">
         <a class="block cursor-pointer text-left text-md items-center px-6 py-3 rounded-lg bg-stone-50 hover:bg-stone-200 transition"
-          routerLink="1/overview">Sala 1</a>
+          routerLink="sala/1/overview" (click)="animateClick()">Sala 1</a>
       </li>
     </ul>
     <ul class="space-y-4 w-full bg-stone-50">
       <li class="mx-8 my-6">
         <a class="block cursor-pointer text-center rounded-lg bg-gray-500 text-white px-3.5 py-2.5 text-md hover:bg-gray-600 hover:shadow-md transition"
-          routerLink="sala-import">Importar Sala (.XLSX)</a>
+          routerLink="sala-import" (click)="animateClick()">Importar Sala (.XLSX)</a>
       </li>
     </ul>
   </div>
