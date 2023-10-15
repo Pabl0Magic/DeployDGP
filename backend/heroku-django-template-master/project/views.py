@@ -2,23 +2,15 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Room
 from .forms import RoomForm, FileUploadForm
 
-from django.views import View
+from django.views import View, generic
 
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 
-from project.models import ExampleModel
-from project.serializers import ExampleModelSerializer
+class Home(generic.ListView):
 
-from django.views.decorators.csrf import csrf_exempt
-
-@csrf_exempt
-def get_data(request):
-	data = ExampleModel.objects.all()
-	if request.method == 'GET':
-		serializer = ExampleModelSerializer(data, many=True)
-		return JsonResponse(serializer.data, safe=False)
-	
+    model = Room
+    template_name = 'home.html'
 
 class RoomCreateView(CreateView):
 	model = Room
