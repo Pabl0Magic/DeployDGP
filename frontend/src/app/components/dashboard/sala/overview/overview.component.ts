@@ -7,12 +7,5 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
-  constructor(
-    private route: ActivatedRoute
-  ) {}
-
-  click() {
-    const collectionId = this.route.snapshot.params.salaId;
-    console.log(collectionId)
-  }
+  constructor() {}
 }
