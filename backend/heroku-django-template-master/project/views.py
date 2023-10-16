@@ -7,8 +7,23 @@ from django.views import View, generic
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 
+def index(request):
+	return render(request, 'upload.html')
 class Home(generic.ListView):
 
+    model = Room
+    template_name = 'home.html'
+
+class RoomCreateView(CreateView):
+	model = Room
+	form_class = RoomForm
+	template_name = 'upload.html'
+
+class RoomUpdateView(UpdateView):
+	model = Room
+	fields = ['name', 'size']
+
+class RoomDeleteView(DeleteView):
     model = Room
     template_name = 'home.html'
 
