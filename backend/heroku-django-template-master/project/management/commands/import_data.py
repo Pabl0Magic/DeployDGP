@@ -27,15 +27,15 @@ class Command(BaseCommand):
             if 'Door' in data:
                 window_data = data['Door']
                 for index, row in window_data.iterrows():
-                    print("1")
+                    print("d1")
                     Door.objects.create(id=row['ID'])
-                    print("1")
+                    print("d1")
 
             # Import data for the Ventilator model
             if 'Ventilator' in data:
                 window_data = data['Ventilator']
                 for index, row in window_data.iterrows():
-                    room_id = row['RoomID']
+                    room_id = row['roomID']
 
                     try:
                         room = Room.objects.get(name=room_id)  
@@ -48,7 +48,7 @@ class Command(BaseCommand):
             if 'Window' in data:
                 window_data = data['Window']
                 for index, row in window_data.iterrows():
-                    room_id = row['RoomID']
+                    room_id = row['roomID']
 
                     try:
                         room = Room.objects.get(name=room_id) 

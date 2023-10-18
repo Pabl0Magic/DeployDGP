@@ -26,5 +26,4 @@ urlpatterns = [
     path('', Home.as_view(), name='home_signed'),    
     path('project/', include('project.urls')),
     path('', RedirectView.as_view(url='/project/', permanent=True))
-    path('upload/', FileUploadView.as_view(), name="file_upload")
 ]

@@ -5,9 +5,9 @@ from django.db import models
 class Room(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     size = models.FloatField()
-    co2 = models.FloatField()
-    temperatura = models.FloatField()
-    luz = models.BooleanField()
+    co2 = models.FloatField(null=True, blank=True)
+    temperatura = models.FloatField(null=True, blank=True)
+    luz = models.BooleanField(null=True, blank=True)
 
 
 class Ventilator(models.Model):
@@ -23,7 +23,7 @@ class Window(models.Model):
 class Door(models.Model):
     id = models.BigAutoField(primary_key=True)
     rooms = models.ManyToManyField(Room)
-    bloqueada = models.BooleanField()
+    bloqueada = models.BooleanField(null=True)
 
 
 class PeopleInRoom(models.Model):
