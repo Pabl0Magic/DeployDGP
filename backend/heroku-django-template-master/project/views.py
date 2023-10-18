@@ -1,6 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Room, Door, Window, Ventilator
 from .forms import RoomForm, FileUploadForm
+from .serializers import RoomSerializer
 
 from django.views import View, generic
 from django.views.decorators.http import require_POST
@@ -8,6 +9,10 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 import pandas as pd
 
@@ -71,31 +76,14 @@ class Home(generic.ListView):
     model = Room
     template_name = 'home.html'
 
-class RoomCreateView(CreateView):
-	model = Room
-	form_class = RoomForm
-	template_name = 'upload.html'
+class RoomCreateView(APIView):
+    def post(self, request, format=None):
+        roomSer = RoomSerializer(data=request.data)
 
-class RoomUpdateView(UpdateView):
-	model = Room
-	fields = ['name', 'size']
-
-class RoomDeleteView(DeleteView):
-    model = Room
-    template_name = 'home.html'
-
-class RoomCreateView(CreateView):
-	model = Room
-	form_class = RoomForm
-	template_name = 'new-sala.html'
-
-class RoomUpdateView(UpdateView):
-	model = Room
-	fields = ['name', 'size']
-
-class RoomDeleteView(DeleteView):
-	model = Room
-	template_name = 'delete-sala.html'
+        if roomSer.is_valid():
+            roomSer.save()
+            return Response(roomSer.data, status=status.HTTP_201_CREATED)
+        return Response(roomSer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 """class FileUploadView(View):
 	def post(self, request):
