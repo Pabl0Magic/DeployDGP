@@ -5,9 +5,9 @@ from django.db import models
 class Room(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     size = models.FloatField()
-    co2 = models.FloatField(null=True, blank=True)
-    temperatura = models.FloatField(null=True, blank=True)
-    luz = models.BooleanField(null=True, blank=True)
+    co2 = models.FloatField(default=700)
+    temperatura = models.FloatField(default=20)
+    luz = models.BooleanField(default=False)
 
 
 class Ventilator(models.Model):
@@ -23,11 +23,11 @@ class Window(models.Model):
 class Door(models.Model):
     id = models.BigAutoField(primary_key=True)
     rooms = models.ManyToManyField(Room)
-    bloqueada = models.BooleanField(null=True)
+    bloqueada = models.BooleanField(default=False)
 
 
 class PeopleInRoom(models.Model):
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
     NOPeopleInRoom = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
 
@@ -36,7 +36,7 @@ class PeopleInRoom(models.Model):
 
 
 class VentilatorIsOn(models.Model):
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
     isOn = models.BooleanField()
     ventilator = models.ForeignKey(Ventilator, on_delete=models.DO_NOTHING)
 
@@ -45,7 +45,7 @@ class VentilatorIsOn(models.Model):
 
 
 class WindowOpen(models.Model):
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
     isOpen = models.BooleanField()
     window = models.ForeignKey(Window, on_delete=models.DO_NOTHING)
 
@@ -54,12 +54,13 @@ class WindowOpen(models.Model):
 
 
 class DoorOpen(models.Model):
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
     isOpen = models.BooleanField()
     door = models.ForeignKey(Door, on_delete=models.DO_NOTHING)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['timestamp', 'door'], name='unique_timestamp_door_combination')]
+
 
 class UploadedFile(models.Model):
     file = models.FileField()
