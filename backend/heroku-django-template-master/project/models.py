@@ -1,3 +1,4 @@
+from typing_extensions import Self
 from django.db import models
 
 # Create your models here.
@@ -8,26 +9,30 @@ class Room(models.Model):
     co2 = models.FloatField(default=700)
     temperatura = models.FloatField(default=20)
     luz = models.BooleanField(default=False)
+    NOPeopleInRoom = models.IntegerField(default=0)
 
 
 class Ventilator(models.Model):
     id = models.BigAutoField(primary_key=True)
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
+    isOn = models.BooleanField(default=False)
 
 
 class Window(models.Model):
     id = models.BigAutoField(primary_key=True)
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
+    isOpen = models.BooleanField(default=False)
 
 
 class Door(models.Model):
     id = models.BigAutoField(primary_key=True)
     rooms = models.ManyToManyField(Room)
     bloqueada = models.BooleanField(default=False)
+    isOpen = models.BooleanField(default=False)
 
 
 class PeopleInRoom(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField() #auto_now_add=True
     NOPeopleInRoom = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
 
@@ -36,7 +41,7 @@ class PeopleInRoom(models.Model):
 
 
 class VentilatorIsOn(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField() #auto_now_add=True
     isOn = models.BooleanField()
     ventilator = models.ForeignKey(Ventilator, on_delete=models.DO_NOTHING)
 
@@ -45,7 +50,7 @@ class VentilatorIsOn(models.Model):
 
 
 class WindowOpen(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField() #auto_now_add=True
     isOpen = models.BooleanField()
     window = models.ForeignKey(Window, on_delete=models.DO_NOTHING)
 
@@ -54,7 +59,7 @@ class WindowOpen(models.Model):
 
 
 class DoorOpen(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField() #auto_now_add=True
     isOpen = models.BooleanField()
     door = models.ForeignKey(Door, on_delete=models.DO_NOTHING)
 
