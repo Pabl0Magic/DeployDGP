@@ -7,5 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
+  dataType: string = "personas";
+  
   constructor() {}
 }

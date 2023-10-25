@@ -15,6 +15,7 @@ import { SalaComponent } from './components/dashboard/sala/sala.component';
 import { SalaImportComponent } from './components/dashboard/sala/sala-import/sala-import.component';
 import { OverviewComponent } from './components/dashboard/sala/overview/overview.component';
 import { ModifySalaComponent } from './components/dashboard/modify-sala/modify-sala.component';
+import { OverviewCardComponent } from './components/dashboard/sala/overview/overview-card/overview-card.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ModifySalaComponent } from './components/dashboard/modify-sala/modify-s
     SalaComponent,
     SalaImportComponent,
     OverviewComponent,
-    ModifySalaComponent
+    ModifySalaComponent,
+    OverviewCardComponent
   ],
   imports: [
     BrowserModule,
