@@ -10,4 +10,8 @@ export class OverviewComponent {
   dataType: string = "personas";
   
   constructor() {}
+
+  changeDataType(dataType: string) {
+    this.dataType = dataType;
+  }
 }
