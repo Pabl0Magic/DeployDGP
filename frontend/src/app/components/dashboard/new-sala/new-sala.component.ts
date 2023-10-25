@@ -9,7 +9,7 @@ import { NewSalaService } from 'src/app/services/new-sala/new-sala.service';
 })
 export class NewSalaComponent implements OnInit {
   lightsSelected: boolean = true;
-  acSelected: boolean = true;
+  ventilatorsSelected: boolean = true;
   salaForm!: FormGroup;
   isSubmitting: boolean = false;
 
@@ -24,8 +24,8 @@ export class NewSalaComponent implements OnInit {
       size: ['', Validators.required],
       doors: ['', Validators.required],
       windows: ['', Validators.required],
-      lights: [true, Validators.required],
-      ac: [true, Validators.required]
+      luz: [true, Validators.required],
+      ventilators: [true, Validators.required]
     })
   }
 
@@ -36,7 +36,7 @@ export class NewSalaComponent implements OnInit {
 
   toggleAire(ac: boolean) {
     console.log("toggled")
-    this.acSelected = ac;
+    this.ventilatorsSelected = ac;
   }
 
   onSubmit(event: any) {
@@ -45,7 +45,7 @@ export class NewSalaComponent implements OnInit {
     this.isSubmitting = true;
 
     this.salaForm.controls['lights'].setValue(this.lightsSelected);
-    this.salaForm.controls['ac'].setValue(this.acSelected);
+    this.salaForm.controls['ventilators'].setValue(this.ventilatorsSelected);
 
     this.newSalaService.createSala(this.salaForm.value);
   }

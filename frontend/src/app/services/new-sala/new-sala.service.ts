@@ -5,17 +5,15 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class NewSalaService {
-  private API_URL = "";
+  private API_URL = "http://127.0.0.1:8000/project";
 
   constructor(private http: HttpClient) { }
 
   createSala(data: any) {
     console.log(data);
     const formData = new FormData();
-    for (let key in data) {
-      formData.append(key, data[key]);
-    }
+    for (let key in data) formData.append(key, data[key]);
 
-    
+    return this.http.post<any>(this.API_URL + '/api/room/create', formData);
   }
 }
