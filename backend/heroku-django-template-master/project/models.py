@@ -10,24 +10,28 @@ class Room(models.Model):
 
 class Ventilator(models.Model):
     id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=30, default='Ventilator')
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
     isOn = models.BooleanField(default=False)
 
 
 class Light(models.Model):
     id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=30, default='Light')
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
     isOn = models.BooleanField(default=False)
 
 
 class Window(models.Model):
     id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=30, default='Window')
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
     isOpen = models.BooleanField(default=False)
 
 
 class Door(models.Model):
     id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=30, default='Door')
     rooms = models.ManyToManyField(Room)
     bloqueada = models.BooleanField(default=False)
     isOpen = models.BooleanField(default=False)
