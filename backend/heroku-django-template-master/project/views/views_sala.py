@@ -1,5 +1,5 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from ..models import Room, Door, Window, Ventilator
+from ..models import PeopleInRoom, Room, Door, RoomTemperature, Window, Ventilator
 from ..forms import RoomForm, FileUploadForm
 from ..serializers import RoomSerializer
 
@@ -72,18 +72,22 @@ def import_excel(request):
     return JsonResponse({'error': 'No file found in the request'}, status=400)
 
 class Home(generic.ListView):
-
     model = Room
     template_name = 'home.html'
 
 class RoomCreateView(APIView):
     def post(self, request, format=None):
-        roomSer = RoomSerializer(data=request.data)
+        room_ser = RoomSerializer(data=request.data)
 
-        if roomSer.is_valid():
-            roomSer.save()
-            return Response(roomSer.data, status=status.HTTP_201_CREATED)
-        return Response(roomSer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if room_ser.is_valid():
+            room_instance = room_ser.save()
+
+            RoomTemperature.objects.create(room=room_instance, temperature=room_instance.temperatura)
+            PeopleInRoom.objects.create(room=room_instance, NOPeopleInRoom=room_instance.NOPeopleInRoom)
+
+            return Response(room_ser.data, status=status.HTTP_201_CREATED)
+        
+        return Response(room_ser.errors, status=status.HTTP_400_BAD_REQUEST)
 
 """class FileUploadView(View):
 	def post(self, request):

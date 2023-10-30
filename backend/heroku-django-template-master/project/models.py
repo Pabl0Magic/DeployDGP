@@ -32,12 +32,20 @@ class Door(models.Model):
 
 
 class PeopleInRoom(models.Model):
-    timestamp = models.DateTimeField() #auto_now_add=True
+    timestamp = models.DateTimeField(auto_now_add=True)
     NOPeopleInRoom = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['timestamp', 'room'], name='unique_timestamp_room_combination')]
+
+class RoomTemperature(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    temperature = models.FloatField()
+    room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['timestamp', 'room'], name='unique_timestamp_room_temperature_combination')]
 
 
 class VentilatorIsOn(models.Model):
