@@ -6,13 +6,15 @@ from django.db import models
 class Room(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     size = models.FloatField()
-    co2 = models.FloatField(default=700)
-    temperature = models.FloatField(default=20)
-    luz = models.BooleanField(default=False)
-    NOPeopleInRoom = models.IntegerField(default=0)
 
 
 class Ventilator(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
+    isOn = models.BooleanField(default=False)
+
+
+class Light(models.Model):
     id = models.BigAutoField(primary_key=True)
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
     isOn = models.BooleanField(default=False)
@@ -31,9 +33,9 @@ class Door(models.Model):
     isOpen = models.BooleanField(default=False)
 
 
-class PeopleInRoom(models.Model):
+class RoomPeople(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    NOPeopleInRoom = models.IntegerField()
+    people = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
 
     class Meta:
@@ -65,6 +67,15 @@ class VentilatorIsOn(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['timestamp', 'ventilator'], name='unique_timestamp_ventilator_combination')]
+
+
+class LightIsOn(models.Model):
+    timestamp = models.DateTimeField() #auto_now_add=True
+    isOn = models.BooleanField()
+    light = models.ForeignKey(Light, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['timestamp', 'light'], name='unique_timestamp_light_combination')]
 
 
 class WindowOpen(models.Model):
