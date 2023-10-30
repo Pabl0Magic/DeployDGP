@@ -1,7 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Room, Door, Window, Ventilator
-from .forms import RoomForm, FileUploadForm
-from .serializers import RoomSerializer
+from ..models import Room, Door, Window, Ventilator
+from ..forms import RoomForm, FileUploadForm
+from ..serializers import RoomSerializer
 
 from django.views import View, generic
 from django.views.decorators.http import require_POST
