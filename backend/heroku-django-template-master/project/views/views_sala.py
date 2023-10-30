@@ -1,5 +1,5 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from ..models import PeopleInRoom, Room, Door, RoomTemperature, Window, Ventilator
+from ..models import PeopleInRoom, Room, Door, RoomCO2, RoomTemperature, Window, Ventilator
 from ..forms import RoomForm, FileUploadForm
 from ..serializers import RoomSerializer
 
@@ -82,8 +82,9 @@ class RoomCreateView(APIView):
         if room_ser.is_valid():
             room_instance = room_ser.save()
 
-            RoomTemperature.objects.create(room=room_instance, temperature=room_instance.temperatura)
             PeopleInRoom.objects.create(room=room_instance, NOPeopleInRoom=room_instance.NOPeopleInRoom)
+            RoomTemperature.objects.create(room=room_instance, temperature=room_instance.temperature)
+            RoomCO2.objects.create(room=room_instance, co2=room_instance.co2)
 
             return Response(room_ser.data, status=status.HTTP_201_CREATED)
         

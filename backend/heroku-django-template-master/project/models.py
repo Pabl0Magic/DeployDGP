@@ -7,7 +7,7 @@ class Room(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     size = models.FloatField()
     co2 = models.FloatField(default=700)
-    temperatura = models.FloatField(default=20)
+    temperature = models.FloatField(default=20)
     luz = models.BooleanField(default=False)
     NOPeopleInRoom = models.IntegerField(default=0)
 
@@ -39,6 +39,7 @@ class PeopleInRoom(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['timestamp', 'room'], name='unique_timestamp_room_combination')]
 
+
 class RoomTemperature(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     temperature = models.FloatField()
@@ -46,6 +47,15 @@ class RoomTemperature(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['timestamp', 'room'], name='unique_timestamp_room_temperature_combination')]
+
+
+class RoomCO2(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    co2 = models.FloatField()
+    room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['timestamp', 'room'], name='unique_timestamp_room_co2_combination')]
 
 
 class VentilatorIsOn(models.Model):
