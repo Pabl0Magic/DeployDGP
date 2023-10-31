@@ -21,3 +21,23 @@ class RoomPeopleConsumer(WebsocketConsumer):
     def people_message(self, event):
         print("Received")
         self.send(text_data=event["people"])
+
+class RoomTemperatureConsumer(WebsocketConsumer):
+    def connect(self):
+        async_to_sync(self.channel_layer.group_add)("temperature", self.channel_name)
+        self.accept()
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)("temperature", self.channel_name)
+
+    def receive(self, temperature_data):
+        async_to_sync(self.channel_layer.group_send)(
+            "temperature",
+            {
+                "type": "temperature.message",
+                "temperature": temperature_data,
+            },
+        )
+
+    def temperature_message(self, event):
+        self.send(text_data=event["temperature"])

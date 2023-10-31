@@ -62,6 +62,32 @@ def room_temperature(request, room_name):
     return JsonResponse({'error': f'No temperature record available for room "{room_name}"'}, status=404)
 
 
+@csrf_exempt
+@require_POST
+def room_add_temperature(request, room_name):
+  try:
+    room = Room.objects.get(name=room_name)
+    temperature_count = request.POST.get('temperature')
+    room_temperature = RoomTemperature.objects.create(room=room, temperature=temperature_count)
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+      "temperature",
+      {
+        "type": "temperature.message",
+        "temperature": str(room_temperature.temperature),
+      },
+    )
+
+    return JsonResponse({'ok': 'ok'})
+
+  except Room.DoesNotExist:
+    return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
+
+  except RoomPeople.DoesNotExist:
+    return JsonResponse({'error': f'No temperature count available for room "{room_name}"'}, status=404)
+
+
 def room_co2(request, room_name):
   try:
     room = Room.objects.get(name=room_name)
