@@ -100,3 +100,29 @@ def room_co2(request, room_name):
 
   except RoomCO2.DoesNotExist:
     return JsonResponse({'error': f'No CO2 record available for room "{room_name}"'}, status=404)
+
+
+@csrf_exempt
+@require_POST
+def room_add_co2(request, room_name):
+  try:
+    room = Room.objects.get(name=room_name)
+    co2_count = request.POST.get('co2')
+    room_co2 = RoomCO2.objects.create(room=room, co2=co2_count)
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+      "co2",
+      {
+        "type": "co2.message",
+        "co2": str(room_co2.co2),
+      },
+    )
+
+    return JsonResponse({'ok': 'ok'})
+
+  except Room.DoesNotExist:
+    return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
+
+  except RoomPeople.DoesNotExist:
+    return JsonResponse({'error': f'No CO2 count available for room "{room_name}"'}, status=404)
