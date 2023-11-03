@@ -11,7 +11,7 @@ def room_people(request, room_name):
     room = Room.objects.get(name=room_name)
     people_count = RoomPeople.objects.filter(room=room).latest('timestamp').people
     timestamp = RoomPeople.objects.filter(room=room).latest('timestamp').timestamp
-    return JsonResponse({'room': room_name, 'people_count': people_count, 'timestamp': timestamp})
+    return JsonResponse({'room': room_name, 'data': people_count, 'timestamp': timestamp})
 
   except Room.DoesNotExist:
     return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
@@ -53,7 +53,7 @@ def room_temperature(request, room_name):
     room = Room.objects.get(name=room_name)
     temperature = RoomTemperature.objects.filter(room=room).latest('timestamp').temperature
     timestamp = RoomTemperature.objects.filter(room=room).latest('timestamp').timestamp
-    return JsonResponse({'room': room_name, 'temperature': temperature, 'timestamp': timestamp})
+    return JsonResponse({'room': room_name, 'data': temperature, 'timestamp': timestamp})
 
   except Room.DoesNotExist:
     return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
@@ -93,7 +93,7 @@ def room_co2(request, room_name):
     room = Room.objects.get(name=room_name)
     co2 = RoomCO2.objects.filter(room=room).latest('timestamp').co2
     timestamp = RoomCO2.objects.filter(room=room).latest('timestamp').timestamp
-    return JsonResponse({'room': room_name, 'co2': co2, 'timestamp': timestamp})
+    return JsonResponse({'room': room_name, 'data': co2, 'timestamp': timestamp})
 
   except Room.DoesNotExist:
     return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
