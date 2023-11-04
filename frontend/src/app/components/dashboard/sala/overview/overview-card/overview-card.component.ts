@@ -8,8 +8,8 @@ import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 })
 export class OverviewCardComponent implements OnInit, OnDestroy {
   @Input() dataType: string = "";
+  @Input() unit: string = "";
   title: string = "";
-  value: number = 0;
 
   receivedData: any;
   private dataSubscription: any;

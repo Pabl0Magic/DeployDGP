@@ -12,6 +12,7 @@ export class OverviewComponent {
   constructor() {}
 
   changeDataType(dataType: string) {
+    console.log(dataType)
     this.dataType = dataType;
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, interval, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +34,38 @@ export class SalaInfoService {
     if (type === 'personas') return this.http.get<any>(this.httpURL + 'people/');
     if (type === 'temperatura') return this.http.get<any>(this.httpURL + 'temperature/');
     else return this.http.get<any>(this.httpURL + 'co2/');
+  }
+
+  sendData(type: string) {
+    if (type === 'personas') {
+      return interval(3000).pipe(
+        switchMap(() => {
+          const formData = new FormData();
+          const personas = Math.floor(Math.random() * 11);
+          formData.append('people', String(personas));
+          return this.http.post(this.httpURL + 'people/add/', formData)
+        })
+      );
+    }
+    if (type === 'temperatura') {
+      return interval(3000).pipe(
+        switchMap(() => {
+          const formData = new FormData();
+          const temperatura = Math.floor(Math.random() * 16) + 10;
+          formData.append('temperature', String(temperatura));
+          return this.http.post(this.httpURL + 'temperature/add/', formData)
+        })
+      );
+    }
+    else {
+      return interval(3000).pipe(
+        switchMap(() => {
+          const formData = new FormData();
+          const co2 = Math.floor(Math.random() * 201) + 600;
+          formData.append('co2', String(co2));
+          return this.http.post(this.httpURL + 'co2/add/', formData)
+        })
+      );
+    }
   }
 }

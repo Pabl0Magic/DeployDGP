@@ -5,13 +5,16 @@
   <app-overview-card
     class="flex grow flex-col text-black text-lg hover:cursor-pointer justify-between h-44 my-4 mr-2 p-4" 
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'personas', 'bg-zinc-100': dataType != 'personas'}"
-    title="Personas" dataType="personas" (click)="changeDataType('personas')"></app-overview-card>
+    title="Personas" dataType="personas" unit="personas" (click)="changeDataType('personas')"></app-overview-card>
   <app-overview-card 
     class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4" 
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'temperatura', 'bg-zinc-100': dataType != 'temperatura'}"
-    title="Temperatura" dataType="temperatura" (click)="changeDataType('temperatura')"></app-overview-card>
+    title="Temperatura" dataType="temperatura" unit="°C" (click)="changeDataType('temperatura')"></app-overview-card>
   <app-overview-card 
     class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4" 
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'co2', 'bg-zinc-100': dataType != 'co2'}"
-    title="CO2" dataType="CO2" (click)="changeDataType('co2')"></app-overview-card>
+    title="CO2" dataType="CO2" unit="ppm" (click)="changeDataType('co2')"></app-overview-card>
+</div>
+<div>
+  <app-overview-chart [dataType]="dataType"></app-overview-chart>
 </div>
