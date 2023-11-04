@@ -90,14 +90,25 @@ class RoomCreateView(APIView):
         
         return Response(room_ser.errors, status=status.HTTP_400_BAD_REQUEST)
 
-"""class FileUploadView(View):
-	def post(self, request):
-		form = FileUploadForm(request.POST, request.FILES)
+class RoomDeleteView(APIView):
+    def delete(self, request, room_name, format=None):
+        try:
+            room = Room.objects.get(name=room_name)
+            room.delete()
+            return Response(f"Room '{room_name}' deleted successfully", status=status.HTTP_204_NO_CONTENT)
+        except Room.DoesNotExist:
+            return Response("Room does not exist", status=status.HTTP_404_NOT_FOUND)
 
-		if form.is_valid():
-			form.save()
-			return JsonResponse({'message': 'File uploaded succesfully'})
-		else:
-			return JsonResponse({'message': 'Error uploading file'}, staus=400)
-		
-		"""
+class RoomUpdateView(APIView):
+    def patch(self, request, room_name, format=None):
+        try:
+            room = Room.objects.get(name=room_name)
+            room_serializer = RoomSerializer(room, data=request.data, partial=True)
+
+            if room_serializer.is_valid():
+                room_serializer.save()
+                return Response(room_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Room.DoesNotExist:
+            return Response("Room does not exist", status=status.HTTP_404_NOT_FOUND)
