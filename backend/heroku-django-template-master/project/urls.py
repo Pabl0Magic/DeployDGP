@@ -8,6 +8,7 @@ urlpatterns = [
     path('room/create', views_sala.RoomCreateView.as_view(), name='room-create'),
     path('room/<str:room_name>/update/', views_sala.RoomUpdateView.as_view(), name='room_update'),
     path('room/<str:room_name>/delete/', views_sala.RoomDeleteView.as_view(), name='room_delete'),
+    path('room/<str:room_name>/view/', views_sala.RoomView(), name='room_view'),
     path('room/<str:room_name>/people/', views_info.room_people, name='room-people'),
     path('room/<str:room_name>/people/add/', views_info.room_add_people, name='room-add-people'),
     path('room/<str:room_name>/temperature/', views_info.room_temperature, name='room-temperature'),

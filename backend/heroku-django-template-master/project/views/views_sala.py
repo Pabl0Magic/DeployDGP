@@ -5,6 +5,7 @@ from ..serializers import RoomSerializer
 
 from django.views import View, generic
 from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from django.shortcuts import render, HttpResponseRedirect
@@ -112,3 +113,20 @@ class RoomUpdateView(APIView):
                 return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Room.DoesNotExist:
             return Response("Room does not exist", status=status.HTTP_404_NOT_FOUND)
+
+@require_GET
+def RoomView(request, room_name, format=None):
+    try:
+        roomModel = Room.objects.get(name=room_name)
+
+        numberPeople = RoomPeople.objects.get(room__name=room_name)[0]
+
+        temperature = RoomTemperature.objects.get(room__name=room_name)[0]
+
+        co2 = RoomCO2.objects.get(room__name=room_name)[0]
+        
+        return JsonResponse({"name": room_name, "numberPeople": numberPeople, "temperature": temperature, "co2": co2})
+    except Room.DoesNotExist:
+        return Response("Room does not exist", status=status.HTTP_404_NOT_FOUND)
+    
+    
