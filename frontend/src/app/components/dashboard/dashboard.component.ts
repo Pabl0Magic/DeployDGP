@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,11 +8,7 @@ import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 export class DashboardComponent implements OnInit {
   elements: NodeListOf<HTMLElement> | null = null;
 
-  constructor(private salaInfoService: SalaInfoService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.salaInfoService.sendData('personas').subscribe((data) => console.log(data));
-    this.salaInfoService.sendData('temperatura').subscribe((data) => console.log(data));
-    this.salaInfoService.sendData('co2').subscribe((data) => console.log(data));
-  }
+  ngOnInit() {}
 }

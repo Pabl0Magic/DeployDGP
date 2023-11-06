@@ -26,7 +26,7 @@ const routes: Routes = [
         component: SalaImportComponent
       },
       {
-        path: 'sala/:salaId',
+        path: 'sala/:salaName',
         component: SalaComponent,
         children: [
           {

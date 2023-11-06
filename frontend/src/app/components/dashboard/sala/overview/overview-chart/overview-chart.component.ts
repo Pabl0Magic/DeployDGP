@@ -9,21 +9,16 @@ import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 })
 export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() dataType: string = 'personas';
+  @Input() salaName: string = "";
   chart: any;
-  labels: string[];
-  data: number[];
+  data: number[] = [];
+  labels: string[] = [];
   personasData: number[] = [];
   viewInitialized: boolean = false;
 
   private dataSubscription: any;
 
-  constructor(private salaInfoService: SalaInfoService) {
-    this.data = [7, 2, 5, 10, 3, 0, 8, 4, 9, 1];
-    this.labels = Array.from({ length: 10 }, () => {
-      const date = new Date();
-      return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-    });
-  }
+  constructor(private salaInfoService: SalaInfoService) {}
 
   createChart() {
     this.chart = new Chart("lineChart", {
@@ -111,15 +106,37 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
   }
 
   ngOnInit() {
-    this.createChart();
+    this.salaInfoService.getLast10Data(this.dataType, this.salaName).subscribe((data: any) => {
+      data.data.reverse();
+      const ts = data.data.map((entry: any) => {
+        const date = new Date(entry.timestamp);
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}:${seconds}`;
+      
+        return {
+          value: entry.value,
+          formattedTime: formattedTime,
+        };
+      });
+
+      this.data = ts.map((entry: any) => entry.value) as number[];
+      this.labels = ts.map((entry: any) => entry.formattedTime) as string[];
+
+      this.createChart();
+    });
 
     this.dataSubscription = this.salaInfoService.onDataMessage(this.dataType).subscribe((data) => {
       const currentDate = new Date();
-      const hours = currentDate.getHours().toString().padStart(2, '0'); // Get hours and ensure 2-digit format
-      const minutes = currentDate.getMinutes().toString().padStart(2, '0'); // Get minutes and ensure 2-digit format
-
+      const hours = currentDate.getHours().toString().padStart(2, '0');
+      const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+      const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+      
       this.chart.data.datasets[0].data.push(data);
-      this.chart.data.labels.push(`${hours}:${minutes}`);
+      this.chart.data.labels.push(`${hours}:${minutes}:${seconds}`);
+      
+
       this.chart.update();
     });
   }
@@ -131,32 +148,14 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
   }
   
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.dataType && this.viewInitialized) {
-      this.chart.destroy();
-      if (this.dataType == 'personas') {
-        this.data = [7, 2, 5, 10, 3, 0, 8, 4, 9, 1];
-        this.labels = Array.from({ length: 10 }, () => {
-          const date = new Date();
-          return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-        });
-      } else if (this.dataType == 'temperatura') {
-        this.data = [15, 16, 16, 17, 17, 19, 20, 17, 20, 22];
-        this.labels = Array.from({ length: 10 }, () => {
-          const date = new Date();
-          return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-        });
-      } else {
-        this.data = [612, 743, 678, 721, 656, 799, 601, 703, 775, 689];
-        this.labels = Array.from({ length: 10 }, () => {
-          const date = new Date();
-          return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-        });
-      }
-      
-      this.dataSubscription.unsubscribe();
+    console.log(changes.dataType + "-" + this.dataType)
 
-      this.ngOnInit();
-    }
+    this.chart.destroy();
+    this.data = [];
+    this.labels = [];
+    this.dataSubscription.unsubscribe();
+
+    this.ngOnInit();
   }
 
   ngOnDestroy() {

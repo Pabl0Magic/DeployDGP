@@ -1,24 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { gsap } from 'gsap';
+import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
 @Component({
   selector: 'app-sala',
   templateUrl: './sala.component.html',
   styleUrls: ['./sala.component.css']
 })
-export class SalaComponent {
+export class SalaComponent implements OnInit {
   elements: NodeListOf<HTMLElement> | null = null;
   isReportsActive = true;
+  size: number = 0;
 
-  constructor(
-    private route: ActivatedRoute
-  ) {}
+  constructor(private route: ActivatedRoute, private salaInfoService: SalaInfoService) {}
+
+  ngOnInit() {
+    const salaName = this.route.snapshot.params.salaName;
+    this.salaInfoService.getSala(salaName).subscribe((data: any) => this.size = data.size);
+  }
 
   click() {
-    const collectionId = this.route.snapshot.params.salaId;
-    console.log(collectionId)
-    
     this.elements = document.querySelectorAll('.dashboard');
 
     gsap.fromTo(this.elements, {

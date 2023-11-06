@@ -30,12 +30,10 @@ export class NewSalaComponent implements OnInit {
   }
 
   toggleLuces(lights: boolean) {
-    console.log("toggled")
     this.lightsSelected = lights;
   }
 
   toggleAire(ac: boolean) {
-    console.log("toggled")
     this.ventilatorsSelected = ac;
   }
 
@@ -44,9 +42,6 @@ export class NewSalaComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    this.salaForm.controls['lights'].setValue(this.lightsSelected);
-    this.salaForm.controls['ventilators'].setValue(this.ventilatorsSelected);
-
-    this.newSalaService.createSala(this.salaForm.value);
+    this.newSalaService.createSala(this.salaForm.value).subscribe((data) => console.log(data));
   }
 }

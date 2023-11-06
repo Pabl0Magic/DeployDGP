@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.core import serializers
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.views.decorators.http import require_POST
@@ -18,6 +19,24 @@ def room_people(request, room_name):
 
   except RoomPeople.DoesNotExist:
     return JsonResponse({'error': f'No people count available for room "{room_name}"'}, status=404)
+  
+
+def room_last_10_people(request, room_name):
+  try:
+    room = Room.objects.get(name=room_name)
+    
+    people_entries = RoomPeople.objects.filter(room=room).order_by('-timestamp')[:10]
+    
+    if people_entries:
+      data = [{'timestamp': entry.timestamp, 'value': entry.people} for entry in people_entries]
+
+      return JsonResponse({'room': room_name, 'data': data})
+    else:
+      return JsonResponse({'error': f'No people records available for room "{room_name}"'}, status=404)
+
+  except Room.DoesNotExist:
+    return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
+
 
 @csrf_exempt
 @require_POST
@@ -62,6 +81,23 @@ def room_temperature(request, room_name):
     return JsonResponse({'error': f'No temperature record available for room "{room_name}"'}, status=404)
 
 
+def room_last_10_temperature(request, room_name):
+  try:
+    room = Room.objects.get(name=room_name)
+    
+    temperature_entries = RoomTemperature.objects.filter(room=room).order_by('-timestamp')[:10]
+    
+    if temperature_entries:
+      data = [{'timestamp': entry.timestamp, 'value': entry.temperature} for entry in temperature_entries]
+
+      return JsonResponse({'room': room_name, 'data': data})
+    else:
+      return JsonResponse({'error': f'No temperature records available for room "{room_name}"'}, status=404)
+
+  except Room.DoesNotExist:
+    return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
+
+
 @csrf_exempt
 @require_POST
 def room_add_temperature(request, room_name):
@@ -101,6 +137,23 @@ def room_co2(request, room_name):
   except RoomCO2.DoesNotExist:
     return JsonResponse({'error': f'No CO2 record available for room "{room_name}"'}, status=404)
 
+
+def room_last_10_co2(request, room_name):
+  try:
+    room = Room.objects.get(name=room_name)
+    
+    co2_entries = RoomCO2.objects.filter(room=room).order_by('-timestamp')[:10]
+    
+    if co2_entries:
+      data = [{'timestamp': entry.timestamp, 'value': entry.co2} for entry in co2_entries]
+
+      return JsonResponse({'room': room_name, 'data': data})
+    else:
+      return JsonResponse({'error': f'No CO2 records available for room "{room_name}"'}, status=404)
+
+  except Room.DoesNotExist:
+    return JsonResponse({'error': f'Room "{room_name}" not found'}, status=404)
+  
 
 @csrf_exempt
 @require_POST

@@ -7,7 +7,7 @@ from django.views import View, generic
 from django.views.decorators.http import require_POST
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 
 from rest_framework import status
@@ -75,7 +75,15 @@ class Home(generic.ListView):
     model = Room
     template_name = 'home.html'
 
-class RoomCreateView(APIView):
+class RoomView(APIView):
+    def get(self, request, room_name=None, format=None):
+        if room_name:
+            room = get_object_or_404(Room, name=room_name)
+            room_ser = RoomSerializer(room)
+            return Response(room_ser.data, status=status.HTTP_200_OK)
+        else:
+            return Response("Please provide a room name", status=status.HTTP_400_BAD_REQUEST)
+
     def post(self, request, format=None):
         room_ser = RoomSerializer(data=request.data)
 
