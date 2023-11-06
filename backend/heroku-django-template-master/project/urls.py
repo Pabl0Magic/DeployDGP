@@ -5,10 +5,8 @@ from .views import views_sala, views_info
 urlpatterns = [
     path('', views_sala.index, name='index'),
     path('home/', views_sala.Home.as_view(), name='home'),
-    path('room/create', views_sala.RoomCreateView.as_view(), name='room-create'),
-    path('room/<str:room_name>/update/', views_sala.RoomUpdateView.as_view(), name='room_update'),
-    path('room/<str:room_name>/delete/', views_sala.RoomDeleteView.as_view(), name='room_delete'),
-    path('room/<str:room_name>/view/', views_sala.RoomView(), name='room_view'),
+    path('room/create/', views_sala.RoomView.as_view(), name='room-create'),
+    path('room/<str:room_name>/', views_sala.RoomView.as_view(), name='room'),
     path('room/<str:room_name>/people/', views_info.room_people, name='room-people'),
     path('room/<str:room_name>/people/last10/', views_info.room_last_10_people, name='room-last-10-people'),
     path('room/<str:room_name>/people/add/', views_info.room_add_people, name='room-add-people'),
