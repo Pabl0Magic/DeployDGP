@@ -97,7 +97,7 @@ class WindowOpen(models.Model):
 
 class DoorOpen(models.Model):
     timestamp = models.DateTimeField() #auto_now_add=True
-    isOpen = models.BooleanField()
+    isOpen = models.BooleanField(default=False)
     door = models.ForeignKey(Door, on_delete=models.CASCADE)
 
     class Meta:
