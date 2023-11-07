@@ -1,5 +1,8 @@
 <div class="flex items-center h-12 mt-4">
-  <span class="flex items-end text-xl text-left">Información en tiempo real</span>
+  <a  class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
+    (click)="sendData()">Enviar datos</a>
+    <a  class="block cursor-pointer text-center rounded-lg bg-black text-white ml-4 px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
+    (click)="pararDatos()">Parar datos</a>
 </div>
 <div class="flex mb-4">
   <app-overview-card

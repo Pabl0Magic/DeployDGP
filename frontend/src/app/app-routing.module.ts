@@ -34,7 +34,7 @@ const routes: Routes = [
             component: OverviewComponent,
           },
           {
-            path: ':modify-sala',
+            path: 'modify-sala',
             component: ModifySalaComponent
           }
         ]

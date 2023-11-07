@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NewSalaService } from 'src/app/services/new-sala/new-sala.service';
 
 @Component({
@@ -15,17 +16,14 @@ export class ModifySalaComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private newSalaService: NewSalaService
+    private newSalaService: NewSalaService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.salaForm = this.formBuilder.group({
       name: ['', Validators.required],
-      size: ['', Validators.required],
-      doors: ['', Validators.required],
-      windows: ['', Validators.required],
-      lights: [true, Validators.required],
-      ac: [true, Validators.required]
+      size: ['', Validators.required]
     })
   }
 
@@ -39,14 +37,18 @@ export class ModifySalaComponent {
     this.acSelected = ac;
   }
 
+  deleteSala() {
+    const salaName = this.route.parent?.snapshot.params.salaName;
+    this.newSalaService.deleteSala(salaName).subscribe((data) => data);
+  }
+
   onSubmit(event: any) {
     if (this.salaForm.invalid) return;
 
     this.isSubmitting = true;
 
-    this.salaForm.controls['lights'].setValue(this.lightsSelected);
-    this.salaForm.controls['ac'].setValue(this.acSelected);
+    const salaName = this.route.parent?.snapshot.params.salaName;
 
-    this.newSalaService.createSala(this.salaForm.value);
+    this.newSalaService.modifySala(salaName, this.salaForm.value);
   }
 }

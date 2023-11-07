@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { gsap } from 'gsap';
+import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
 @Component({
   selector: 'app-sala',
@@ -10,10 +11,19 @@ import { gsap } from 'gsap';
 export class SalaComponent {
   elements: NodeListOf<HTMLElement> | null = null;
   isReportsActive = true;
+  name: string = "";
+  size: number = 0;
 
-  constructor(
-    private route: ActivatedRoute
-  ) {}
+  constructor(private route: ActivatedRoute, private salaInfoService: SalaInfoService) {}
+
+  ngOnInit() {
+    console.log("Sala reloaded")
+    const salaName = this.route.snapshot.params.salaName;
+    this.salaInfoService.getSala(salaName).subscribe((data: any) => {
+      this.name = data.name;
+      this.size = data.size;
+    });
+  }
 
   click() {
     const collectionId = this.route.snapshot.params.salaId;
