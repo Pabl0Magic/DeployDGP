@@ -135,7 +135,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
       
       this.chart.data.datasets[0].data.push(data);
       this.chart.data.labels.push(`${hours}:${minutes}:${seconds}`);
-      
+      console.log(this.salaName)
 
       this.chart.update();
     });
@@ -159,6 +159,6 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.chart.destroy();
+    if (this.chart) this.chart.destroy();
   }
 }

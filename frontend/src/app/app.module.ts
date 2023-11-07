@@ -16,6 +16,8 @@ import { SalaImportComponent } from './components/dashboard/sala/sala-import/sal
 import { OverviewComponent } from './components/dashboard/sala/overview/overview.component';
 import { ModifySalaComponent } from './components/dashboard/modify-sala/modify-sala.component';
 import { OverviewCardComponent } from './components/dashboard/sala/overview/overview-card/overview-card.component';
+import { RouteReuseStrategy } from '@angular/router';
+import { RoomRouteReuseStrategy } from './route-strategy/room-route-reuse-strategy';
 import { OverviewChartComponent } from './components/dashboard/sala/overview/overview-chart/overview-chart.component';
 
 @NgModule({
@@ -44,6 +46,7 @@ import { OverviewChartComponent } from './components/dashboard/sala/overview/ove
   ],
   providers: [
     { provide: DatePipe, useValue: new DatePipe('en-US') },
+    { provide: RouteReuseStrategy, useClass: RoomRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

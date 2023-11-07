@@ -11,13 +11,18 @@ import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 export class SalaComponent implements OnInit {
   elements: NodeListOf<HTMLElement> | null = null;
   isReportsActive = true;
+  name: string = "";
   size: number = 0;
 
   constructor(private route: ActivatedRoute, private salaInfoService: SalaInfoService) {}
 
   ngOnInit() {
+    console.log("Sala reloaded")
     const salaName = this.route.snapshot.params.salaName;
-    this.salaInfoService.getSala(salaName).subscribe((data: any) => this.size = data.size);
+    this.salaInfoService.getSala(salaName).subscribe((data: any) => {
+      this.name = data.name;
+      this.size = data.size;
+    });
   }
 
   click() {

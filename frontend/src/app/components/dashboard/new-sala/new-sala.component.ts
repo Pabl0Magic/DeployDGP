@@ -22,10 +22,6 @@ export class NewSalaComponent implements OnInit {
     this.salaForm = this.formBuilder.group({
       name: ['', Validators.required],
       size: ['', Validators.required],
-      doors: ['', Validators.required],
-      windows: ['', Validators.required],
-      luz: [true, Validators.required],
-      ventilators: [true, Validators.required]
     })
   }
 
