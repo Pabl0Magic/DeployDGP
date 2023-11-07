@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -75,6 +76,18 @@ def import_excel(request):
 class Home(generic.ListView):
     model = Room
     template_name = 'home.html'
+
+
+@api_view(['GET'])
+def get_all_rooms(request):
+    rooms = Room.objects.all()  # Retrieve all rooms from the database
+    room_serializer = RoomSerializer(rooms, many=True)  # Serialize all rooms
+
+    if rooms:
+        return Response(room_serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response("No rooms found", status=status.HTTP_404_NOT_FOUND)
+
 
 class RoomView(APIView):
     def get(self, request, room_name=None, format=None):
