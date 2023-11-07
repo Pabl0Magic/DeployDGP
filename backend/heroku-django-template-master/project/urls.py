@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import views_sala, views_info
+from .views import views_sala, views_info, views_puerta
 
 urlpatterns = [
     path('', views_sala.index, name='index'),
@@ -17,4 +17,7 @@ urlpatterns = [
     path('room/<str:room_name>/co2/', views_info.room_co2, name='room-co2'),
     path('room/<str:room_name>/co2/last10/', views_info.room_last_10_co2, name='room-last-10-co2'),
     path('room/<str:room_name>/co2/add/', views_info.room_add_co2, name='room-add-co2'),
+    path('door/all/', views_puerta.get_all_doors, name='door-all'),
+    path('door/create/', views_puerta.DoorView.as_view(), name='door-create'),
+    path('door/<str:door_id>/', views_puerta.DoorView.as_view(), name='door')
 ]
