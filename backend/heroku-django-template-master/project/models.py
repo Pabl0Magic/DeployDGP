@@ -88,7 +88,7 @@ class LightIsOn(models.Model):
 
 class WindowOpen(models.Model):
     timestamp = models.DateTimeField() #auto_now_add=True
-    isOpen = models.BooleanField()
+    isOpen = models.BooleanField(default=False)
     window = models.ForeignKey(Window, on_delete=models.CASCADE)
 
     class Meta:
