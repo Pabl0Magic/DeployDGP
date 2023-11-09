@@ -50,7 +50,7 @@ class WindowView(APIView):
 
             window_instance.room = room
 
-            WindowOpen.objects.create(window=window_instance, timpestamp=datetime.now())
+            WindowOpen.objects.create(window=window_instance, timestamp=datetime.now())
 
             return Response(window_ser.data, status=status.HTTP_201_CREATED)
         
