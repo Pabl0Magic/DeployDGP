@@ -20,7 +20,7 @@ urlpatterns = [
     path('room/<str:room_name>/door/all/', views_puerta.get_all_doors, name='door-all'),
     path('room/<str:room_name>/door/create/', views_puerta.DoorView.as_view(), name='door-create'),
     path('room/<str:room_name>/door/<str:door_id>/', views_puerta.DoorView.as_view(), name='door'),
-    path('window/all/', views_ventana.get_all_windows, name='window-all'),
-    path('window/create/', views_ventana.WindowView.as_view(), name='window-create'),
-    path('window/<str:window_id>/', views_ventana.WindowView.as_view(), name='window')
+    path('room/<str:room_name>/window/all/', views_ventana.get_all_windows, name='window-all'),
+    path('room/<str:room_name>/window/create/', views_ventana.WindowView.as_view(), name='window-create'),
+    path('room/<str:room_name>/window/<str:window_id>/', views_ventana.WindowView.as_view(), name='window')
 ]

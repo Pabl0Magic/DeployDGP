@@ -1,5 +1,5 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from ..models import Window, WindowOpen
+from ..models import Window, WindowOpen, Room
 from ..forms import RoomForm, FileUploadForm
 from ..serializers import WindowSerializer
 
@@ -21,8 +21,8 @@ from datetime import datetime
 import pandas as pd
 
 @api_view(['GET'])
-def get_all_windows(request):
-    windows = Window.objects.all()  # Retrieve all windows from the database
+def get_all_windows(request, room_name):
+    windows = Window.objects.filter(room__pk=room_name)  # Retrieve all windows from a room from the database
     windows_serializer = WindowSerializer(windows, many=True)  # Serialize all windows
 
     if windows:
@@ -40,11 +40,15 @@ class WindowView(APIView):
         else:
             return Response("Please provide a window id", status=status.HTTP_400_BAD_REQUEST)
         
-    def post(self, request, format=None):
+    def post(self, request, format=None, room_name=None):
         window_ser = WindowSerializer(data=request.data)
 
         if window_ser.is_valid():
             window_instance = window_ser.save()
+
+            room = Room.objects.get(name=room_name)
+
+            window_instance.room = room
 
             WindowOpen.objects.create(window=window_instance, timpestamp=datetime.now())
 
