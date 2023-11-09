@@ -12,18 +12,19 @@
     <li class="mr-2">
       <a 
         class="cursor-pointer inline-block p-2 border-b-2" 
-        [class.text-black]="isReportsActive"
-        [class.border-black]="isReportsActive"
-        [class.border-transparent]="!isReportsActive"
+        [class.text-black]="isOverviewActive"
+        [class.border-black]="isOverviewActive"
+        [class.border-transparent]="!isOverviewActive"
         routerLink="overview"
       >Información</a>
     </li>
     <li class="mr-2">
       <a 
         class="cursor-pointer inline-block p-2 border-b-2"
-        [class.text-black]="!isReportsActive"
-        [class.border-black]="!isReportsActive"
-        [class.border-transparent]="isReportsActive"
+        [class.text-black]="!isOverviewActive"
+        [class.border-black]="!isOverviewActive"
+        [class.border-transparent]="isOverviewActive"
+        routerLink="devices"
       >Controles</a>
     </li>
   </ul>

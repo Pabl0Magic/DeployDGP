@@ -32,7 +32,7 @@ def get_all_doors(request, room_name):
 
 
 class DoorView(APIView):
-    def get(self, request, door_id=None, format=None):
+    def get(self, request, room_name, door_id, format=None):
         if door_id:
             door = get_object_or_404(Door, id=door_id)
             door_ser = DoorSerializer(door)
@@ -40,7 +40,7 @@ class DoorView(APIView):
         else:
             return Response("Please provide a door id", status=status.HTTP_400_BAD_REQUEST)
         
-    def post(self, request, format=None, room_name=None):
+    def post(self, request, room_name, format=None):
         door_ser = DoorSerializer(data=request.data)
 
         if door_ser.is_valid():
@@ -50,13 +50,13 @@ class DoorView(APIView):
 
             door_instance.rooms.add(room)
 
-            DoorOpen.objects.create(door=door_instance, timpestamp=datetime.now())
+            DoorOpen.objects.create(door=door_instance, timestamp=datetime.now())
 
             return Response(door_ser.data, status=status.HTTP_201_CREATED)
         
         return Response(door_ser.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, door_id, format=None):
+    def delete(self, request, room_name, door_id, format=None):
         try:
             door = Door.objects.get(id=door_id)
             door.delete()
@@ -64,7 +64,7 @@ class DoorView(APIView):
         except Door.DoesNotExist:
             return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)
         
-    def patch(self, request, door_id, format=None):
+    def patch(self, request, room_name, door_id, format=None):
         try:
             door = Door.objects.get(id=door_id)
             door_serializer = DoorSerializer(door, data=request.data, partial=True)

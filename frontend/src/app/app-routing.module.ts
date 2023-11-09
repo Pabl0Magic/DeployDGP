@@ -6,6 +6,8 @@ import { SalaImportComponent } from './components/dashboard/sala/sala-import/sal
 import { OverviewComponent } from './components/dashboard/sala/overview/overview.component';
 import { ModifySalaComponent } from './components/dashboard/modify-sala/modify-sala.component';
 import { SalaComponent } from './components/dashboard/sala/sala.component';
+import { DevicesComponent } from './components/dashboard/sala/devices/devices.component';
+import { NewDeviceComponent } from './components/dashboard/sala/devices/new-device/new-device.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -34,8 +36,16 @@ const routes: Routes = [
             component: OverviewComponent,
           },
           {
+            path: 'devices',
+            component: DevicesComponent
+          },
+          {
             path: 'modify-sala',
             component: ModifySalaComponent
+          },
+          {
+            path: 'new-device/:deviceType',
+            component: NewDeviceComponent
           }
         ]
       }

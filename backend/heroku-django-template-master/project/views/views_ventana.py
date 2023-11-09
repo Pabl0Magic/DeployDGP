@@ -32,7 +32,7 @@ def get_all_windows(request, room_name):
 
 
 class WindowView(APIView):
-    def get(self, request, window_id=None, format=None):
+    def get(self, request, room_name, window_id=None, format=None):
         if window_id:
             window = get_object_or_404(Window, id=window_id)
             window_ser = WindowSerializer(window)
@@ -50,13 +50,13 @@ class WindowView(APIView):
 
             window_instance.room = room
 
-            WindowOpen.objects.create(window=window_instance, timpestamp=datetime.now())
+            WindowOpen.objects.create(window=window_instance, timestamp=datetime.now())
 
             return Response(window_ser.data, status=status.HTTP_201_CREATED)
         
         return Response(window_ser.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, window_id, format=None):
+    def delete(self, request, room_name, window_id, format=None):
         try:
             window = Window.objects.get(id=window_id)
             window.delete()
@@ -64,7 +64,7 @@ class WindowView(APIView):
         except Window.DoesNotExist:
             return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)
         
-    def patch(self, request, window_id, format=None):
+    def patch(self, request, room_name, window_id, format=None):
         try:
             window = Window.objects.get(id=window_id)
             window_serializer = WindowSerializer(window, data=request.data, partial=True)
