@@ -21,8 +21,8 @@ from datetime import datetime
 import pandas as pd
 
 @api_view(['GET'])
-def get_all_doors(request):
-    doors = Door.objects.all()  # Retrieve all doors from the database
+def get_all_doors(request, room_name):
+    doors = Door.objects.filter(rooms__pk=room_name)  # Retrieve all doors from a room from the database
     door_serializer = DoorSerializer(doors, many=True)  # Serialize all doors
 
     if doors:
@@ -40,11 +40,15 @@ class DoorView(APIView):
         else:
             return Response("Please provide a door id", status=status.HTTP_400_BAD_REQUEST)
         
-    def post(self, request, format=None):
+    def post(self, request, format=None, room_name=None):
         door_ser = DoorSerializer(data=request.data)
 
         if door_ser.is_valid():
             door_instance = door_ser.save()
+
+            room = Room.objects.get(name=room_name)
+
+            door_instance.rooms.add(room)
 
             DoorOpen.objects.create(door=door_instance, timpestamp=datetime.now())
 
