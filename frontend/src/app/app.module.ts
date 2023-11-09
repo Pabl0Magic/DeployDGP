@@ -19,6 +19,9 @@ import { OverviewCardComponent } from './components/dashboard/sala/overview/over
 import { RouteReuseStrategy } from '@angular/router';
 import { RoomRouteReuseStrategy } from './route-strategy/room-route-reuse-strategy';
 import { OverviewChartComponent } from './components/dashboard/sala/overview/overview-chart/overview-chart.component';
+import { DevicesComponent } from './components/dashboard/sala/devices/devices.component';
+import { DeviceCardComponent } from './components/dashboard/sala/devices/device-card/device-card.component';
+import { NewDeviceComponent } from './components/dashboard/sala/devices/new-device/new-device.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { OverviewChartComponent } from './components/dashboard/sala/overview/ove
     OverviewComponent,
     ModifySalaComponent,
     OverviewCardComponent,
-    OverviewChartComponent
+    OverviewChartComponent,
+    DevicesComponent,
+    DeviceCardComponent,
+    NewDeviceComponent
   ],
   imports: [
     BrowserModule,

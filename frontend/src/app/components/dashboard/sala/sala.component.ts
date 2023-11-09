@@ -10,7 +10,7 @@ import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 })
 export class SalaComponent implements OnInit {
   elements: NodeListOf<HTMLElement> | null = null;
-  isReportsActive = true;
+  isOverviewActive = true;
   name: string = "";
   size: number = 0;
 
