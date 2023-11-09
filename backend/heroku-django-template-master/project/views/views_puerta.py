@@ -50,7 +50,7 @@ class DoorView(APIView):
 
             door_instance.rooms.add(room)
 
-            DoorOpen.objects.create(door=door_instance, timpestamp=datetime.now())
+            DoorOpen.objects.create(door=door_instance, timestamp=datetime.now())
 
             return Response(door_ser.data, status=status.HTTP_201_CREATED)
         
