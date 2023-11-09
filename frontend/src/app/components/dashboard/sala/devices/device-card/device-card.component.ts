@@ -14,6 +14,7 @@ export class DeviceCardComponent {
   @Input() bloqueada: boolean = false;
   @Input() salaName: string = "";
   @Output() deleted: EventEmitter<{ deviceId: number, deviceType: string }> = new EventEmitter<{ deviceId: number, deviceType: string }>();
+  @Output() switched: EventEmitter<{ newIsOpen: boolean, deviceId: number, deviceType: string }> = new EventEmitter<{ newIsOpen: boolean, deviceId: number, deviceType: string }>();
   
   currentAction: string = "Abrir";
 
@@ -30,6 +31,7 @@ export class DeviceCardComponent {
         this.isOpen = !this.isOpen;
         if (this.isOpen) this.currentAction = "Cerrar";
         else this.currentAction = "Abrir";
+        this.switched.emit({newIsOpen: this.isOpen, deviceId: this.id, deviceType: this.deviceType});
       }
     );
   }

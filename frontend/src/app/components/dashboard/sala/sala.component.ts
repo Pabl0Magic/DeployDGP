@@ -38,4 +38,8 @@ export class SalaComponent implements OnInit {
       ease: 'power4.out',
     });
   }
+
+  updateIsOverviewActive() {
+    this.isOverviewActive = !this.isOverviewActive;
+  }
 }

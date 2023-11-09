@@ -1,29 +1,28 @@
-<div class="flex items-center h-12 mt-4">
-  Dispositivos
-</div>
-<div class="flex flex-col mb-4">
+<div class="flex flex-col my-4">
   <div class="flex flex-col">
-    <div class="flex items-center h-12 mt-4">
-      <p class="mr-6">Puertas</p>
-      <a class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
-      routerLink="../new-device/puerta">Añadir puertas</a>
+    <div class="flex items-end h-12 mt-4">
+      <p class="mr-6 text-2xl">Puertas</p>
+      <a class="block cursor-pointer text-center rounded-xl bg-sky-50 text-sky-500 px-3.5 py-2.5 text-md hover:bg-sky-100 hover:shadow-md transition" 
+      routerLink="../new-device/puerta">+ Añadir puertas</a>
     </div>
     <div class="flex flex-row flex-wrap">
-      <app-device-card *ngFor="let puerta of puertas" (deleted)="onDeviceDeleted($event)"
-        class="flex grow flex-col text-black text-lg justify-between w-3/12 h-44 my-4 mr-2 p-4 bg-zinc-100 shadow-md" 
+      <app-device-card *ngFor="let puerta of puertas" (deleted)="onDeviceDeleted($event)" (switched)="onDeviceSwitched($event)"
+        class="flex grow flex-col text-black text-lg justify-between bg-sky-50 w-3/12 h-40 my-4 mr-6 p-4 shadow-sm transition"
+        [ngClass]="{'bg-sky-50 border border-sky-500': puerta.isOpen, 'bg-stone-50': !puerta.isOpen }"
         [salaName]="salaName" deviceType="puerta" [name]="puerta.name" [isOpen]="puerta.isOpen"
         [id]="puerta.id"></app-device-card>
     </div>
   </div>
   <div>
-    <div class="flex items-center h-12 mt-4">
-      <p class="mr-6">Ventanas</p>
-      <a class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
-      routerLink="../new-device/ventana">Añadir ventanas</a>
+    <div class="flex items-end h-12 mt-4">
+      <p class="mr-6 text-2xl">Ventanas</p>
+      <a class="block cursor-pointer text-center rounded-xl bg-emerald-50 text-emerald-500 px-3.5 py-2.5 text-md hover:bg-emerald-100 hover:shadow-md transition" 
+      routerLink="../new-device/ventana">+ Añadir ventanas</a>
     </div>
     <div class="flex flex-row flex-wrap">
-      <app-device-card *ngFor="let ventana of ventanas" (deleted)="onDeviceDeleted($event)"
-        class="flex grow flex-col text-black text-lg justify-between w-3/12 h-44 my-4 mr-2 p-4 bg-zinc-100 shadow-md"
+      <app-device-card *ngFor="let ventana of ventanas" (deleted)="onDeviceDeleted($event)" (switched)="onDeviceSwitched($event)"
+        class="flex grow flex-col text-black text-lg justify-between w-3/12 h-40 my-4 mr-6 p-4 shadow-sm transition"
+        [ngClass]="{'bg-emerald-50 border border-emerald-500': ventana.isOpen, 'bg-stone-50': !ventana.isOpen }"
         [salaName]="salaName" deviceType="ventana" [name]="ventana.name" [isOpen]="ventana.isOpen"
         [id]="ventana.id"></app-device-card>
     </div>
