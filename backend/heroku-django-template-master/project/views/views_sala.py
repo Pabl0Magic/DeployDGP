@@ -1,5 +1,5 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from ..models import RoomPeople, Room, Door, RoomCO2, RoomTemperature, Window, Ventilator
+from ..models import RoomPeople, Room, Door, RoomCO2, RoomTemperature, Window, Ventilator, Light
 from ..forms import RoomForm, FileUploadForm
 from ..serializers import RoomSerializer
 
@@ -17,6 +17,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import pandas as pd
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 
 def index(request):
 	return render(request, 'upload.html')
@@ -72,6 +75,48 @@ def import_excel(request):
                 return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'No file found in the request'}, status=400)
+
+@require_POST
+def export_data(request):
+    if 'file' in request.FILES:
+        file_path = os.path.join(BASE_DIR, 'room_data.csv')
+
+        try:
+            rooms = Room.objects.all()
+            room_lists = []
+            
+            for room in rooms:
+                doors = Door.objects.filter(rooms__pk=room.name)
+                door_list = []
+                for door in doors:
+                    door_list.append(door.name)
+
+                windows = Window.objects.filter(room__pk=room.name)
+                window_list = []
+                for window in windows:
+                    window_list.append(window.name)
+
+                ligths = Light.objects.filter(room__pk=room.name)
+                ligths_list = []
+                for light in ligths:
+                    ligths_list.append(light.name)
+
+                ventilators = Ventilator.objects.filter(room__pk=room.name)
+                ventilator_list = []
+                for ventilator in ventilators:
+                    ventilator_list.append(ventilator.name)
+                
+                room_lists.append((room.name, room.size, door_list, window_list, ligths_list, ventilator_list))
+
+
+
+            df = pd.DataFrame({'Rooms': room_lists})
+            df.to_csv(file_path, index=False)
+
+            return JsonResponse({'message': 'Data exported completed successfully'})
+
+        except Exception as e:
+            return JsonResponse({'error': 'Data export failed'}, status=400)
 
 class Home(generic.ListView):
     model = Room
