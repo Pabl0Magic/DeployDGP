@@ -28,17 +28,31 @@
     </div>
   </div>
   <div>
-    <p>Luces</p>
-    <app-device-card *ngFor="let luz of luces"
-      class="flex grow flex-col text-black text-lg justify-between 
-            w-3/12 h-44 my-4 mr-2 p-4 bg-zinc-100 shadow-md"
-      title="Personas" [salaName]="salaName" deviceType="luz"></app-device-card>
+    <div class="flex items-end h-12 mt-4">
+      <p class="mr-6 text-2xl">Luces</p>
+      <a class="block cursor-pointer text-center rounded-xl bg-violet-50 text-violet-500 px-3.5 py-2.5 text-md hover:bg-violet-100 hover:shadow-md transition" 
+      routerLink="../new-device/luz">+ Añadir luces</a>
+    </div>
+    <div class="flex flex-row flex-wrap">
+      <app-device-card *ngFor="let luz of luces" (deleted)="onDeviceDeleted($event)" (switched)="onDeviceSwitched($event)"
+        class="flex grow flex-col text-black text-lg justify-between w-3/12 h-40 my-4 mr-6 p-4 shadow-sm transition"
+        [ngClass]="{'bg-violet-50 border border-violet-500': luz.isOn, 'bg-stone-50': !luz.isOn }"
+        [salaName]="salaName" deviceType="luz" [name]="luz.name" [isOpen]="luz.isOn"
+        [id]="luz.id"></app-device-card>
+    </div>
   </div>
   <div>
-    <p>Ventiladores</p>
-    <app-device-card *ngFor="let ventilador of ventiladores"
-      class="flex grow flex-col text-black text-lg justify-between 
-            w-3/12 h-44 my-4 mr-2 p-4 bg-zinc-100 shadow-md"
-      title="Personas" [salaName]="salaName" deviceType="ventilador"></app-device-card>
+    <div class="flex items-end h-12 mt-4">
+      <p class="mr-6 text-2xl">Ventiladores</p>
+      <a class="block cursor-pointer text-center rounded-xl bg-rose-50 text-rose-500 px-3.5 py-2.5 text-md hover:bg-rose-100 hover:shadow-md transition" 
+      routerLink="../new-device/ventilador">+ Añadir ventilador</a>
+    </div>
+    <div class="flex flex-row flex-wrap">
+      <app-device-card *ngFor="let ventilador of ventiladores" (deleted)="onDeviceDeleted($event)" (switched)="onDeviceSwitched($event)"
+        class="flex grow flex-col text-black text-lg justify-between w-3/12 h-40 my-4 mr-6 p-4 shadow-sm transition"
+        [ngClass]="{'bg-rose-50 border border-rose-500': ventilador.isOn, 'bg-stone-50': !ventilador.isOn }"
+        [salaName]="salaName" deviceType="ventilador" [name]="ventilador.name" [isOpen]="ventilador.isOn"
+        [id]="ventilador.id"></app-device-card>
+    </div>
   </div>
 </div>
