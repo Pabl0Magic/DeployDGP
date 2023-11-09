@@ -17,6 +17,14 @@ export class DevicesService {
     return this.http.get(this.httpURL + encodeURI(salaName) + "/window/all/");
   }
 
+  getAllLights(salaName: string) {
+    return this.http.get(this.httpURL + encodeURI(salaName) + "/light/all/");
+  }
+
+  getAllVentilators(salaName: string) {
+    return this.http.get(this.httpURL + encodeURI(salaName) + "/ventilator/all/");
+  }
+
   createDevice(deviceType: string, salaName: string, data: any) {
     const formData = new FormData();
     for (let key in data) formData.append(key, data[key]);

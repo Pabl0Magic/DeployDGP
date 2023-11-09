@@ -55,12 +55,12 @@ export class DevicesComponent implements OnInit {
 
     else if (eventData.deviceType === 'luz') {
       let luz = this.luces.find(luz => luz.id === eventData.deviceId);
-      luz.isOpen = eventData.newIsOpen;
+      luz.isOn = eventData.newIsOpen;
     }
 
     else {
       let ventilador = this.ventiladores.find(ventilador => ventilador.id === eventData.deviceId);
-      ventilador.isOpen = eventData.newIsOpen;
+      ventilador.isOn = eventData.newIsOpen;
     }
   }
 }
