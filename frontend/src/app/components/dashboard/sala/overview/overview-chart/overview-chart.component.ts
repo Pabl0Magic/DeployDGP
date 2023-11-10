@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
 import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
@@ -8,6 +8,7 @@ import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
   styleUrls: ['./overview-chart.component.css']
 })
 export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy {
+  @ViewChild('canvas') canvas!: ElementRef;
   @Input() dataType: string = 'personas';
   @Input() salaName: string = "";
   chart: any;
@@ -21,6 +22,10 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
   constructor(private salaInfoService: SalaInfoService) {}
 
   createChart() {
+    const gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, this.hexToRGBA("#6d28d9", 0.7));
+    gradient.addColorStop(1, '#FFFFFF');
+
     this.chart = new Chart("lineChart", {
       type: 'line',
       data: {
@@ -32,7 +37,8 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
             fill: 'origin',
             tension: 0,
             borderColor: '#6d28d9',
-            pointBackgroundColor: '#6d28d9'
+            pointBackgroundColor: '#6d28d9',
+            backgroundColor: gradient
           }  
         ]
       },
@@ -142,20 +148,37 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
   }
 
   ngAfterViewInit() {
+    console.log("After view")
     if (this.chart) {
+      this.changeGradient();
       this.viewInitialized = true;
     }
   }
+
+  changeGradient() {
+    const ctx = this.chart.ctx;
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, this.hexToRGBA("#6d28d9", 0.5));
+    gradient.addColorStop(1, '#FFFFFF');
+    this.chart.data.datasets[0].backgroundColor = gradient;
+    this.chart.update();
+  }
+
+  hexToRGBA(hex: string, alpha: number): string {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
   
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes.dataType + "-" + this.dataType)
-
     this.chart.destroy();
     this.data = [];
     this.labels = [];
     this.dataSubscription.unsubscribe();
 
     this.ngOnInit();
+    this.changeGradient();
   }
 
   ngOnDestroy() {

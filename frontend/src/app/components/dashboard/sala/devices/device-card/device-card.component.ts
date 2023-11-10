@@ -16,6 +16,8 @@ export class DeviceCardComponent {
   @Output() deleted: EventEmitter<{ deviceId: number, deviceType: string }> = new EventEmitter<{ deviceId: number, deviceType: string }>();
   @Output() switched: EventEmitter<{ newIsOpen: boolean, deviceId: number, deviceType: string }> = new EventEmitter<{ newIsOpen: boolean, deviceId: number, deviceType: string }>();
   
+  switching: boolean = false;
+
   currentAction: string = "Abrir";
 
   constructor(private devicesService: DevicesService) {}
@@ -25,13 +27,16 @@ export class DeviceCardComponent {
   }
 
   switchDevice() {
+    this.switching = true;
     const newValue = !this.isOpen;
     this.devicesService.switchDevice(this.deviceType, this.id, newValue, this.salaName).subscribe(
       (data: any) => {
         this.isOpen = !this.isOpen;
         if (this.isOpen) this.currentAction = "Cerrar";
         else this.currentAction = "Abrir";
+        
         this.switched.emit({newIsOpen: this.isOpen, deviceId: this.id, deviceType: this.deviceType});
+        this.switching = false;
       }
     );
   }
@@ -39,9 +44,12 @@ export class DeviceCardComponent {
   deleteDevice() {
     this.devicesService.deleteDevice(this.deviceType, this.id, this.salaName).subscribe(
       (data: any) => {
-        console.log(data);
         this.deleted.emit({deviceId: this.id, deviceType: this.deviceType});
       }
     );
+  }
+
+  isSwitching() {
+    return this.isSwitching;
   }
 }

@@ -20,7 +20,11 @@ urlpatterns = [
     path('room/<str:room_name>/door/all/', views_puerta.get_all_doors, name='door-all'),
     path('room/<str:room_name>/door/create/', views_puerta.DoorView.as_view(), name='door-create'),
     path('room/<str:room_name>/door/<str:door_id>/', views_puerta.DoorView.as_view(), name='door'),
+    path('room/<str:room_name>/door/<str:door_id>/addTs/', views_puerta.DoorOpenView.as_view(), name='door-add-ts'),
+    path('room/<str:room_name>/door/<str:door_id>/activity/', views_puerta.get_recent_door_activity, name='door-activity'),
     path('room/<str:room_name>/window/all/', views_ventana.get_all_windows, name='window-all'),
     path('room/<str:room_name>/window/create/', views_ventana.WindowView.as_view(), name='window-create'),
-    path('room/<str:room_name>/window/<str:window_id>/', views_ventana.WindowView.as_view(), name='window')
+    path('room/<str:room_name>/window/<str:window_id>/', views_ventana.WindowView.as_view(), name='window'),
+    path('room/<str:room_name>/window/<str:window_id>/addTs/', views_ventana.WindowOpenView.as_view(), name='window-add-ts'),
+    path('room/<str:room_name>/window/<str:window_id>/activity/', views_ventana.get_recent_window_activity, name='window-activity'),
 ]

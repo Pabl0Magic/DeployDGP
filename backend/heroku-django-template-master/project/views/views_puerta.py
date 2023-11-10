@@ -16,7 +16,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 
@@ -75,5 +75,40 @@ class DoorView(APIView):
             else:
                 return Response(door_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Door.DoesNotExist:
-            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)    
-    
+            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)  
+
+
+class DoorOpenView(APIView):
+    def post(self, request, room_name, door_id, format=None):
+        try:
+            door_instance = Door.objects.get(id=door_id)
+
+            timestamp = datetime.now()
+            isOpen = request.data.get('isOpen', False)
+            
+            door_open_instance = DoorOpen.objects.create(door=door_instance, timestamp=timestamp, isOpen=isOpen)
+            
+            return Response({"id": door_instance.id, "timestamp": timestamp, "isOpen": isOpen}, status=status.HTTP_201_CREATED)
+        except Door.DoesNotExist:
+            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)  
+        
+
+@api_view(['GET'])
+def get_recent_door_activity(request, room_name, door_id):
+    try:
+        door = Door.objects.get(id=door_id)
+
+        door = get_object_or_404(Door, id=door.id)
+        door_opens = DoorOpen.objects.filter(
+            door__id=door.id
+        ).order_by('door', 'timestamp')
+        
+        current_activities = []
+
+        for door_open in door_opens:
+            current_activities.append({"isOpen": door_open.isOpen, "timestamp": door_open.timestamp})
+
+        return Response({"id": door.id, "name": door.name, "activities": current_activities})
+            
+    except Exception as e:
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

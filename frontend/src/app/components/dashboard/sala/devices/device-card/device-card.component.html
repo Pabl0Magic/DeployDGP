@@ -2,12 +2,13 @@
   <div class="item-wrapper basis-3/12 h-3/12">
     <div class="item-wrapper flex justify-between">
         <div class="item-wrapper text-md tracking-tight ml-4 mt-2">{{name}}</div>
+        <a class="bg-transparent mr-2 rounded-lg px-3.5 py-1.5 hover:bg-black hover:bg-opacity-5 transition" routerLink="../device-chart/{{deviceType}}/{{id}}">Ver</a>
     </div>
   </div>
   <div class="item-wrapper flex flex-row justify-around w-full h-7/12">
     <a class="block cursor-pointer text-center rounded-lg bg-white border border-black text-black w-5/12 px-3.5 py-2.5 text-md 
-              hover:text-white hover:bg-black transition" 
-    (click)="switchDevice()">{{currentAction}}</a>
+              hover:text-white hover:bg-black transition"
+        [class.disabled]="isSwitching()"    (click)="switchDevice()">{{currentAction}}</a>
     <a class="block cursor-pointer text-center rounded-lg text-red-500 border border-red-500 text-black 
               w-5/12 px-3.5 py-2.5 text-md hover:bg-red-50 transition"
     (click)="deleteDevice()">Eliminar</a>

@@ -77,3 +77,37 @@ class WindowView(APIView):
         except Window.DoesNotExist:
             return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)    
     
+
+class WindowOpenView(APIView):
+    def post(self, request, room_name, window_id, format=None):
+        try:
+            window_instance = Window.objects.get(id=window_id)
+
+            timestamp = datetime.now()
+            isOpen = request.data.get('isOpen', False)
+            window_open_instance = WindowOpen.objects.create(window=window_instance, timestamp=timestamp, isOpen=isOpen)
+            
+            return Response({"id": window_instance.id, "timestamp": timestamp, "isOpen": isOpen}, status=status.HTTP_201_CREATED)
+        except Window.DoesNotExist:
+            return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)  
+
+
+@api_view(['GET'])
+def get_recent_window_activity(request, room_name, window_id):
+    try:
+        window = Window.objects.get(id=window_id)
+
+        window = get_object_or_404(Window, id=window.id)
+        window_opens = WindowOpen.objects.filter(
+            window__id=window.id
+        ).order_by('window', 'timestamp')
+        
+        current_activities = []
+
+        for window_open in window_opens:
+            current_activities.append({"isOpen": window_open.isOpen, "timestamp": window_open.timestamp})
+
+        return Response({"id": window.id, "name": window.name, "activities": current_activities})
+            
+    except Exception as e:
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

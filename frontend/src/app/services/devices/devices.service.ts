@@ -25,6 +25,11 @@ export class DevicesService {
     return this.http.get(this.httpURL + encodeURI(salaName) + "/ventilator/all/");
   }
 
+  getActivity(salaName: string, deviceType: string, deviceId: number) {
+    if (deviceType === 'puerta') return this.http.get(this.httpURL + encodeURI(salaName) + "/door/" + deviceId + "/activity/");
+    else return this.http.get(this.httpURL + encodeURI(salaName) + "/window/" + deviceId + "/activity/");
+  }
+
   createDevice(deviceType: string, salaName: string, data: any) {
     const formData = new FormData();
     for (let key in data) formData.append(key, data[key]);
@@ -45,13 +50,16 @@ export class DevicesService {
   }
 
   switchDevice(deviceType: string, deviceId: number, newValue: boolean, salaName: string) {
+    const isOpen = newValue? 'True': 'False';
+    console.log("Data about to be sent: " + isOpen)
     const formData = new FormData();
-    if (deviceType === 'puerta' || deviceType === 'ventana') formData.append('isOpen', String(newValue));
-    else formData.append('isOn', String(newValue));
+    if (deviceType === 'puerta' || deviceType === 'ventana') formData.append('isOpen', isOpen);
+    else formData.append('isOn', isOpen);
+    console.log(formData.get('isOpen'))
 
-    if (deviceType === 'puerta') return this.http.patch(this.httpURL + encodeURI(salaName) + '/door/' + deviceId + '/', formData);
-    if (deviceType === 'ventana') return this.http.patch(this.httpURL + encodeURI(salaName) + '/window/' + deviceId + '/', formData);
-    if (deviceType === 'luz') return this.http.patch(this.httpURL + encodeURI(salaName) + '/light/' + deviceId + '/', formData);
-    else return this.http.patch(this.httpURL + encodeURI(salaName) + '/ventilator/' + deviceId + '/', formData);
+    if (deviceType === 'puerta') return this.http.post(this.httpURL + encodeURI(salaName) + '/door/' + deviceId + '/addTs/', formData);
+    if (deviceType === 'ventana') return this.http.post(this.httpURL + encodeURI(salaName) + '/window/' + deviceId + '/addTs/', formData);
+    if (deviceType === 'luz') return this.http.post(this.httpURL + encodeURI(salaName) + '/light/' + deviceId + '/addTs/', formData);
+    else return this.http.post(this.httpURL + encodeURI(salaName) + '/ventilator/' + deviceId + '/addTs/', formData);
   }
 }

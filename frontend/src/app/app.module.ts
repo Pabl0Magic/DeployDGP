@@ -22,6 +22,8 @@ import { OverviewChartComponent } from './components/dashboard/sala/overview/ove
 import { DevicesComponent } from './components/dashboard/sala/devices/devices.component';
 import { DeviceCardComponent } from './components/dashboard/sala/devices/device-card/device-card.component';
 import { NewDeviceComponent } from './components/dashboard/sala/devices/new-device/new-device.component';
+import { DevicesChartComponent } from './components/dashboard/sala/devices/devices-chart/devices-chart.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { NewDeviceComponent } from './components/dashboard/sala/devices/new-devi
     OverviewChartComponent,
     DevicesComponent,
     DeviceCardComponent,
-    NewDeviceComponent
+    NewDeviceComponent,
+    DevicesChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +49,7 @@ import { NewDeviceComponent } from './components/dashboard/sala/devices/new-devi
     ReactiveFormsModule,
     BrowserAnimationsModule,
     NgChartsModule,
+    MatDialogModule
     /*RouterModule.forRoot([
       { path: 'collection/:collectionId', component: CollectionNavbarComponent, data: { reuse: true } }
     ])*/

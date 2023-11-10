@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DevicesService } from 'src/app/services/devices/devices.service';
 
@@ -14,20 +15,18 @@ export class DevicesComponent implements OnInit {
   luces: any[] = [];
   ventiladores: any[] = [];
 
-  constructor(private devicesService: DevicesService, private route: ActivatedRoute) {}
+  constructor(private devicesService: DevicesService, private route: ActivatedRoute, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.salaName = this.route.parent?.snapshot.params.salaName;
 
     this.devicesService.getAllDoors(this.salaName).subscribe(
       (data: any) => {
-        console.log(data);
         this.puertas = data;
       }
     );
     this.devicesService.getAllWindows(this.salaName).subscribe(
       (data: any) => {
-        console.log(data);
         this.ventanas = data;
       }
     );
