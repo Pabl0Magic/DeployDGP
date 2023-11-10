@@ -30,7 +30,11 @@ export class DevicesComponent implements OnInit {
         this.ventanas = data;
       }
     );
-    // Luces
+    this.devicesService.getAllLights(this.salaName).subscribe(
+      (data: any) => {
+        this.luces = data;
+      }
+    );
     // Ventiladores
   }
 
@@ -53,7 +57,9 @@ export class DevicesComponent implements OnInit {
     }
 
     else if (eventData.deviceType === 'luz') {
+      console.log("Looking for luz")
       let luz = this.luces.find(luz => luz.id === eventData.deviceId);
+      console.log(luz.id)
       luz.isOn = eventData.newIsOpen;
     }
 

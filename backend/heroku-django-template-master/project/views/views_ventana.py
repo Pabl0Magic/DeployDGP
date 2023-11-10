@@ -85,6 +85,10 @@ class WindowOpenView(APIView):
 
             timestamp = datetime.now()
             isOpen = request.data.get('isOpen', False)
+
+            window_instance.isOpen = isOpen
+            window_instance.save()
+
             window_open_instance = WindowOpen.objects.create(window=window_instance, timestamp=timestamp, isOpen=isOpen)
             
             return Response({"id": window_instance.id, "timestamp": timestamp, "isOpen": isOpen}, status=status.HTTP_201_CREATED)

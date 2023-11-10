@@ -27,7 +27,9 @@ export class DevicesService {
 
   getActivity(salaName: string, deviceType: string, deviceId: number) {
     if (deviceType === 'puerta') return this.http.get(this.httpURL + encodeURI(salaName) + "/door/" + deviceId + "/activity/");
-    else return this.http.get(this.httpURL + encodeURI(salaName) + "/window/" + deviceId + "/activity/");
+    if (deviceType === 'ventana') return this.http.get(this.httpURL + encodeURI(salaName) + "/window/" + deviceId + "/activity/");
+    if (deviceType === 'luz') return this.http.get(this.httpURL + encodeURI(salaName) + "/light/" + deviceId + "/activity/");
+    else return this.http.get(this.httpURL + encodeURI(salaName) + "/ventilator/" + deviceId + "/activity/");
   }
 
   createDevice(deviceType: string, salaName: string, data: any) {
@@ -51,11 +53,11 @@ export class DevicesService {
 
   switchDevice(deviceType: string, deviceId: number, newValue: boolean, salaName: string) {
     const isOpen = newValue? 'True': 'False';
-    console.log("Data about to be sent: " + isOpen)
     const formData = new FormData();
+    
     if (deviceType === 'puerta' || deviceType === 'ventana') formData.append('isOpen', isOpen);
     else formData.append('isOn', isOpen);
-    console.log(formData.get('isOpen'))
+    console.log(deviceType)
 
     if (deviceType === 'puerta') return this.http.post(this.httpURL + encodeURI(salaName) + '/door/' + deviceId + '/addTs/', formData);
     if (deviceType === 'ventana') return this.http.post(this.httpURL + encodeURI(salaName) + '/window/' + deviceId + '/addTs/', formData);

@@ -29,5 +29,8 @@ urlpatterns = [
     path('room/<str:room_name>/window/<str:window_id>/activity/', views_ventana.get_recent_window_activity, name='window-activity'),
     path('room/<str:room_name>/light/all/', views_luz.get_all_lights, name='light-all'),
     path('room/<str:room_name>/light/create/', views_luz.LightView.as_view(), name='light-create'),
-    path('room/<str:room_name>/light/<str:light_id>/', views_luz.LightView.as_view(), name='light')
+    path('room/<str:room_name>/light/<str:light_id>/', views_luz.LightView.as_view(), name='light'),
+    path('room/<str:room_name>/light/<str:light_id>/addTs/', views_luz.LightIsOnView.as_view(), name='light-add-ts'),
+    path('room/<str:room_name>/light/<str:light_id>/activity/', views_luz.get_recent_light_activity, name='light-activity'),
+
 ]

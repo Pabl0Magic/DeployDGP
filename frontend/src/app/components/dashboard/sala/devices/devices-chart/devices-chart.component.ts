@@ -38,7 +38,7 @@ export class DevicesChartComponent implements OnInit {
     this.data.activities = this.data.activities.slice(-10);
     this.data.activities.forEach((activity: any) => {
       this.labels.push(activity.timestamp);
-      this.stepChartData.push(activity.isOpen ? "Abierto" : "Cerrado");
+      this.stepChartData.push((activity.isOpen || activity.isOn) ? "Abierto" : "Cerrado");
     });
   }
 

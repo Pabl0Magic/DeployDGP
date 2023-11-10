@@ -70,7 +70,7 @@ class RoomCO2(models.Model):
 
 class VentilatorIsOn(models.Model):
     timestamp = models.DateTimeField() #auto_now_add=True
-    isOn = models.BooleanField()
+    isOn = models.BooleanField(default=False)
     ventilator = models.ForeignKey(Ventilator, on_delete=models.CASCADE)
 
     class Meta:
@@ -79,7 +79,7 @@ class VentilatorIsOn(models.Model):
 
 class LightIsOn(models.Model):
     timestamp = models.DateTimeField() #auto_now_add=True
-    isOn = models.BooleanField()
+    isOn = models.BooleanField(default=False)
     light = models.ForeignKey(Light, on_delete=models.CASCADE)
 
     class Meta:

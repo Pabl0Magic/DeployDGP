@@ -85,6 +85,9 @@ class DoorOpenView(APIView):
 
             timestamp = datetime.now()
             isOpen = request.data.get('isOpen', False)
+
+            door_instance.isOpen = isOpen
+            door_instance.save()
             
             door_open_instance = DoorOpen.objects.create(door=door_instance, timestamp=timestamp, isOpen=isOpen)
             

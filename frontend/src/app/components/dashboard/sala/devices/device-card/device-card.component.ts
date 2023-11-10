@@ -32,6 +32,7 @@ export class DeviceCardComponent {
     this.devicesService.switchDevice(this.deviceType, this.id, newValue, this.salaName).subscribe(
       (data: any) => {
         this.isOpen = !this.isOpen;
+        console.log("New isOpen = " + this.isOpen)
         if (this.isOpen) this.currentAction = "Cerrar";
         else this.currentAction = "Abrir";
         
