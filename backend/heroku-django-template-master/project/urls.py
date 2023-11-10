@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import views_sala, views_info, views_puerta, views_ventana
+from .views import views_sala, views_info, views_puerta, views_ventana, views_luz
 
 urlpatterns = [
     path('', views_sala.index, name='index'),
@@ -27,4 +27,7 @@ urlpatterns = [
     path('room/<str:room_name>/window/<str:window_id>/', views_ventana.WindowView.as_view(), name='window'),
     path('room/<str:room_name>/window/<str:window_id>/addTs/', views_ventana.WindowOpenView.as_view(), name='window-add-ts'),
     path('room/<str:room_name>/window/<str:window_id>/activity/', views_ventana.get_recent_window_activity, name='window-activity'),
+    path('room/<str:room_name>/light/all/', views_luz.get_all_lights, name='light-all'),
+    path('room/<str:room_name>/light/create/', views_luz.LightView.as_view(), name='light-create'),
+    path('room/<str:room_name>/light/<str:light_id>/', views_luz.LightView.as_view(), name='light')
 ]
