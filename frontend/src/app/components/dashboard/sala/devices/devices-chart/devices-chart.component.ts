@@ -84,7 +84,6 @@ export class DevicesChartComponent implements OnInit {
   }
 
   getActivityCallback(data: any) {
-    console.log(data)
     this.data = data;
     this.processData();
     this.labels = this.labels.map(ts => new Date(ts).toLocaleTimeString('en-US', {hour12: false}))

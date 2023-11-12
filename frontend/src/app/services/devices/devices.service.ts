@@ -57,7 +57,6 @@ export class DevicesService {
     
     if (deviceType === 'puerta' || deviceType === 'ventana') formData.append('isOpen', isOpen);
     else formData.append('isOn', isOpen);
-    console.log(deviceType)
 
     if (deviceType === 'puerta') return this.http.post(this.httpURL + encodeURI(salaName) + '/door/' + deviceId + '/addTs/', formData);
     if (deviceType === 'ventana') return this.http.post(this.httpURL + encodeURI(salaName) + '/window/' + deviceId + '/addTs/', formData);
