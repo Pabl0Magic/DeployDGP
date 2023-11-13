@@ -20,9 +20,12 @@ from datetime import datetime
 
 import pandas as pd
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def get_all_windows(request, room_name):
-    windows = Window.objects.filter(room__pk=room_name)  # Retrieve all windows from a room from the database
+    windows = Window.objects.filter(
+        room__pk=room_name
+    )  # Retrieve all windows from a room from the database
     windows_serializer = WindowSerializer(windows, many=True)  # Serialize all windows
 
     if windows:
@@ -38,8 +41,10 @@ class WindowView(APIView):
             window_ser = WindowSerializer(window)
             return Response(window_ser.data, status=status.HTTP_200_OK)
         else:
-            return Response("Please provide a window id", status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                "Please provide a window id", status=status.HTTP_400_BAD_REQUEST
+            )
+
     def post(self, request, format=None, room_name=None):
         window_ser = WindowSerializer(data=request.data)
 
@@ -53,30 +58,37 @@ class WindowView(APIView):
             WindowOpen.objects.create(window=window_instance, timestamp=datetime.now())
 
             return Response(window_ser.data, status=status.HTTP_201_CREATED)
-        
+
         return Response(window_ser.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, room_name, window_id, format=None):
         try:
             window = Window.objects.get(id=window_id)
             window.delete()
-            return Response(f"Window '{window_id}' deleted successfully", status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                f"Window '{window_id}' deleted successfully",
+                status=status.HTTP_204_NO_CONTENT,
+            )
         except Window.DoesNotExist:
             return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)
-        
+
     def patch(self, request, room_name, window_id, format=None):
         try:
             window = Window.objects.get(id=window_id)
-            window_serializer = WindowSerializer(window, data=request.data, partial=True)
+            window_serializer = WindowSerializer(
+                window, data=request.data, partial=True
+            )
 
             if window_serializer.is_valid():
                 window_serializer.save()
                 return Response(window_serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response(window_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    window_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
         except Window.DoesNotExist:
-            return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)    
-    
+            return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)
+
 
 class WindowOpenView(APIView):
     def post(self, request, room_name, window_id, format=None):
@@ -84,34 +96,46 @@ class WindowOpenView(APIView):
             window_instance = Window.objects.get(id=window_id)
 
             timestamp = datetime.now()
-            isOpen = request.data.get('isOpen', False)
+            isOpen = request.data.get("isOpen", False)
 
             window_instance.isOpen = isOpen
             window_instance.save()
 
-            window_open_instance = WindowOpen.objects.create(window=window_instance, timestamp=timestamp, isOpen=isOpen)
-            
-            return Response({"id": window_instance.id, "timestamp": timestamp, "isOpen": isOpen}, status=status.HTTP_201_CREATED)
+            window_open_instance = WindowOpen.objects.create(
+                window=window_instance, timestamp=timestamp, isOpen=isOpen
+            )
+
+            return Response(
+                {"id": window_instance.id, "timestamp": timestamp, "isOpen": isOpen},
+                status=status.HTTP_201_CREATED,
+            )
         except Window.DoesNotExist:
-            return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)  
+            return Response("Window does not exist", status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_recent_window_activity(request, room_name, window_id):
     try:
         window = Window.objects.get(id=window_id)
 
         window = get_object_or_404(Window, id=window.id)
-        window_opens = WindowOpen.objects.filter(
-            window__id=window.id
-        ).order_by('window', 'timestamp')
-        
+        window_opens = WindowOpen.objects.filter(window__id=window.id).order_by(
+            "window", "timestamp"
+        )
+
         current_activities = []
 
         for window_open in window_opens:
-            current_activities.append({"isOpen": window_open.isOpen, "timestamp": window_open.timestamp})
+            current_activities.append(
+                {"isOpen": window_open.isOpen, "timestamp": window_open.timestamp}
+            )
 
-        return Response({"id": window.id, "name": window.name, "activities": current_activities})
-            
+        return Response(
+            {"id": window.id, "name": window.name, "activities": current_activities}
+        )
+
     except Exception as e:
-        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(
+            {"error": f"An error occurred: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )

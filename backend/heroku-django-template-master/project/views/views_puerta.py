@@ -1,5 +1,14 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from ..models import DoorOpen, RoomPeople, Room, Door, RoomCO2, RoomTemperature, Window, Ventilator
+from ..models import (
+    DoorOpen,
+    RoomPeople,
+    Room,
+    Door,
+    RoomCO2,
+    RoomTemperature,
+    Window,
+    Ventilator,
+)
 from ..forms import RoomForm, FileUploadForm
 from ..serializers import DoorSerializer
 
@@ -20,9 +29,12 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def get_all_doors(request, room_name):
-    doors = Door.objects.filter(rooms__pk=room_name)  # Retrieve all doors from a room from the database
+    doors = Door.objects.filter(
+        rooms__pk=room_name
+    )  # Retrieve all doors from a room from the database
     door_serializer = DoorSerializer(doors, many=True)  # Serialize all doors
 
     if doors:
@@ -38,8 +50,10 @@ class DoorView(APIView):
             door_ser = DoorSerializer(door)
             return Response(door_ser.data, status=status.HTTP_200_OK)
         else:
-            return Response("Please provide a door id", status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                "Please provide a door id", status=status.HTTP_400_BAD_REQUEST
+            )
+
     def post(self, request, room_name, format=None):
         door_ser = DoorSerializer(data=request.data)
 
@@ -53,17 +67,20 @@ class DoorView(APIView):
             DoorOpen.objects.create(door=door_instance, timestamp=datetime.now())
 
             return Response(door_ser.data, status=status.HTTP_201_CREATED)
-        
+
         return Response(door_ser.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, room_name, door_id, format=None):
         try:
             door = Door.objects.get(id=door_id)
             door.delete()
-            return Response(f"Door '{door_id}' deleted successfully", status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                f"Door '{door_id}' deleted successfully",
+                status=status.HTTP_204_NO_CONTENT,
+            )
         except Door.DoesNotExist:
             return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)
-        
+
     def patch(self, request, room_name, door_id, format=None):
         try:
             door = Door.objects.get(id=door_id)
@@ -73,9 +90,11 @@ class DoorView(APIView):
                 door_serializer.save()
                 return Response(door_serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response(door_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    door_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
         except Door.DoesNotExist:
-            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)  
+            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)
 
 
 class DoorOpenView(APIView):
@@ -84,34 +103,46 @@ class DoorOpenView(APIView):
             door_instance = Door.objects.get(id=door_id)
 
             timestamp = datetime.now()
-            isOpen = request.data.get('isOpen', False)
+            isOpen = request.data.get("isOpen", False)
 
             door_instance.isOpen = isOpen
             door_instance.save()
-            
-            door_open_instance = DoorOpen.objects.create(door=door_instance, timestamp=timestamp, isOpen=isOpen)
-            
-            return Response({"id": door_instance.id, "timestamp": timestamp, "isOpen": isOpen}, status=status.HTTP_201_CREATED)
-        except Door.DoesNotExist:
-            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)  
-        
 
-@api_view(['GET'])
+            door_open_instance = DoorOpen.objects.create(
+                door=door_instance, timestamp=timestamp, isOpen=isOpen
+            )
+
+            return Response(
+                {"id": door_instance.id, "timestamp": timestamp, "isOpen": isOpen},
+                status=status.HTTP_201_CREATED,
+            )
+        except Door.DoesNotExist:
+            return Response("Door does not exist", status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET"])
 def get_recent_door_activity(request, room_name, door_id):
     try:
         door = Door.objects.get(id=door_id)
 
         door = get_object_or_404(Door, id=door.id)
-        door_opens = DoorOpen.objects.filter(
-            door__id=door.id
-        ).order_by('door', 'timestamp')
-        
+        door_opens = DoorOpen.objects.filter(door__id=door.id).order_by(
+            "door", "timestamp"
+        )
+
         current_activities = []
 
         for door_open in door_opens:
-            current_activities.append({"isOpen": door_open.isOpen, "timestamp": door_open.timestamp})
+            current_activities.append(
+                {"isOpen": door_open.isOpen, "timestamp": door_open.timestamp}
+            )
 
-        return Response({"id": door.id, "name": door.name, "activities": current_activities})
-            
+        return Response(
+            {"id": door.id, "name": door.name, "activities": current_activities}
+        )
+
     except Exception as e:
-        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(
+            {"error": f"An error occurred: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )

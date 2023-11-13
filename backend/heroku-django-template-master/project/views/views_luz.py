@@ -20,9 +20,12 @@ from datetime import datetime
 
 import pandas as pd
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def get_all_lights(request, room_name):
-    lights = Light.objects.filter(room__pk=room_name)  # Retrieve all lights from a room from the database
+    lights = Light.objects.filter(
+        room__pk=room_name
+    )  # Retrieve all lights from a room from the database
     lights_serializer = LightSerializer(lights, many=True)  # Serialize all lights
 
     if lights:
@@ -38,8 +41,10 @@ class LightView(APIView):
             light_ser = LightSerializer(light)
             return Response(light_ser.data, status=status.HTTP_200_OK)
         else:
-            return Response("Please provide a light id", status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                "Please provide a light id", status=status.HTTP_400_BAD_REQUEST
+            )
+
     def post(self, request, format=None, room_name=None):
         light_ser = LightSerializer(data=request.data)
 
@@ -53,17 +58,20 @@ class LightView(APIView):
             LightIsOn.objects.create(light=light_instance, timestamp=datetime.now())
 
             return Response(light_ser.data, status=status.HTTP_201_CREATED)
-        
+
         return Response(light_ser.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, room_name, light_id, format=None):
         try:
             light = Light.objects.get(id=light_id)
             light.delete()
-            return Response(f"Light '{light_id}' deleted successfully", status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                f"Light '{light_id}' deleted successfully",
+                status=status.HTTP_204_NO_CONTENT,
+            )
         except Light.DoesNotExist:
             return Response("Light does not exist", status=status.HTTP_404_NOT_FOUND)
-        
+
     def patch(self, request, room_name, light_id, format=None):
         try:
             light = Light.objects.get(id=light_id)
@@ -73,9 +81,11 @@ class LightView(APIView):
                 light_serializer.save()
                 return Response(light_serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response(light_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    light_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
         except Light.DoesNotExist:
-            return Response("Light does not exist", status=status.HTTP_404_NOT_FOUND)    
+            return Response("Light does not exist", status=status.HTTP_404_NOT_FOUND)
 
 
 class LightIsOnView(APIView):
@@ -84,34 +94,46 @@ class LightIsOnView(APIView):
             light_instance = Light.objects.get(id=light_id)
 
             timestamp = datetime.now()
-            isOn = request.data.get('isOn', False)
+            isOn = request.data.get("isOn", False)
 
             light_instance.isOn = isOn
             light_instance.save()
-            
-            light_open_instance = LightIsOn.objects.create(light=light_instance, timestamp=timestamp, isOn=isOn)
-            
-            return Response({"id": light_instance.id, "timestamp": timestamp, "isOn": isOn}, status=status.HTTP_201_CREATED)
+
+            light_open_instance = LightIsOn.objects.create(
+                light=light_instance, timestamp=timestamp, isOn=isOn
+            )
+
+            return Response(
+                {"id": light_instance.id, "timestamp": timestamp, "isOn": isOn},
+                status=status.HTTP_201_CREATED,
+            )
         except Light.DoesNotExist:
-            return Response("Light does not exist", status=status.HTTP_404_NOT_FOUND)  
+            return Response("Light does not exist", status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_recent_light_activity(request, room_name, light_id):
     try:
         light = Light.objects.get(id=light_id)
 
         light = get_object_or_404(Light, id=light.id)
-        light_ons = LightIsOn.objects.filter(
-            light__id=light.id
-        ).order_by('light', 'timestamp')
-        
+        light_ons = LightIsOn.objects.filter(light__id=light.id).order_by(
+            "light", "timestamp"
+        )
+
         current_activities = []
 
         for light_on in light_ons:
-            current_activities.append({"isOn": light_on.isOn, "timestamp": light_on.timestamp})
+            current_activities.append(
+                {"isOn": light_on.isOn, "timestamp": light_on.timestamp}
+            )
 
-        return Response({"id": light.id, "name": light.name, "activities": current_activities})
-            
+        return Response(
+            {"id": light.id, "name": light.name, "activities": current_activities}
+        )
+
     except Exception as e:
-        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(
+            {"error": f"An error occurred: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
