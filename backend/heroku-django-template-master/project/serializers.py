@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Room, Door, Window, Light
+from .models import Room, Door, Ventilator, Window, Light
 
 class RoomSerializer(serializers.ModelSerializer):
 
@@ -20,8 +20,16 @@ class WindowSerializer(serializers.ModelSerializer):
         model = Window
         fields = '__all__'
 
+
 class LightSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Light
+        fields = '__all__'
+
+
+class VentilatorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ventilator
         fields = '__all__'

@@ -32,6 +32,18 @@ export class DevicesService {
     else return this.http.get(this.httpURL + encodeURI(salaName) + "/ventilator/" + deviceId + "/activity/");
   }
 
+  modifyDevice(deviceType: string, deviceId: number, salaName: string, data: any) {
+    const formData = new FormData();
+    for (let key in data) formData.append(key, data[key]);
+    if (deviceType === 'puerta') formData.append('rooms', salaName);
+    else formData.append('room', salaName);
+
+    if (deviceType === 'puerta') return this.http.patch(this.httpURL + encodeURI(salaName) + "/door/" + deviceId + "/", formData);
+    if (deviceType === 'ventana') return this.http.patch(this.httpURL + encodeURI(salaName) + "/window/" + deviceId + "/", formData);
+    if (deviceType === 'luz') return this.http.patch(this.httpURL + encodeURI(salaName) + "/light/" + deviceId + "/", formData);
+    else return this.http.patch(this.httpURL + encodeURI(salaName) + "/ventilator/" + deviceId + "/", formData);
+  }
+
   createDevice(deviceType: string, salaName: string, data: any) {
     const formData = new FormData();
     for (let key in data) formData.append(key, data[key]);

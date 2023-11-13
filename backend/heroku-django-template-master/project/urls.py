@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import views_sala, views_info, views_puerta, views_ventana, views_luz
+from .views import views_sala, views_info, views_puerta, views_ventana, views_luz, views_ventilador
 
 urlpatterns = [
     path('', views_sala.index, name='index'),
@@ -32,5 +32,9 @@ urlpatterns = [
     path('room/<str:room_name>/light/<str:light_id>/', views_luz.LightView.as_view(), name='light'),
     path('room/<str:room_name>/light/<str:light_id>/addTs/', views_luz.LightIsOnView.as_view(), name='light-add-ts'),
     path('room/<str:room_name>/light/<str:light_id>/activity/', views_luz.get_recent_light_activity, name='light-activity'),
-
+    path('room/<str:room_name>/ventilator/all/', views_ventilador.get_all_ventilators, name='ventilator-all'),
+    path('room/<str:room_name>/ventilator/create/', views_ventilador.VentilatorView.as_view(), name='ventilator-create'),
+    path('room/<str:room_name>/ventilator/<str:ventilator_id>/', views_ventilador.VentilatorView.as_view(), name='ventilator'),
+    path('room/<str:room_name>/ventilator/<str:ventilator_id>/addTs/', views_ventilador.VentilatorIsOnView.as_view(), name='ventilator-add-ts'),
+    path('room/<str:room_name>/ventilator/<str:ventilator_id>/activity/', views_ventilador.get_recent_ventilator_activity, name='ventilator-activity')
 ]
