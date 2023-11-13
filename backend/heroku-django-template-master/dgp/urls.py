@@ -25,3 +25,4 @@ urlpatterns = [
     path("project/", include("project.urls")),
     path("", RedirectView.as_view(url="/project/", permanent=True)),
 ]
+
