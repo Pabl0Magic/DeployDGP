@@ -1,7 +1,7 @@
 """ Serializers file to work with the models """
 
 from rest_framework import serializers
-from .models import Room, Door, Window, Light
+from .models import Room, Door, Ventilator, Window, Light
 
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -34,6 +34,7 @@ class WindowSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
 class LightSerializer(serializers.ModelSerializer):
     """Serializer for Light Model"""
 
@@ -41,4 +42,11 @@ class LightSerializer(serializers.ModelSerializer):
         """Meta class for the serializer"""
 
         model = Light
+        fields = "__all__"
+
+
+class VentilatorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ventilator
         fields = "__all__"

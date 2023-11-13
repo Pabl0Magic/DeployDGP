@@ -1,8 +1,12 @@
 <div class="flex items-center h-12 mt-4">
-  <a  class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
-    (click)="sendData()">Enviar datos</a>
-    <a  class="block cursor-pointer text-center rounded-lg bg-black text-white ml-4 px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
-    (click)="pararDatos()">Parar datos</a>
+  <a class="block text-center rounded-lg px-3.5 py-2.5 text-md"
+    [ngClass]="{'cursor-default border border-black bg-white text-black transition': enviando, 
+                'cursor-pointer bg-black text-white hover:shadow-md transition': !enviando}"
+    (click)="sendData()">{{ enviando? 'Enviando': 'Enviar datos'}}</a>
+    <a class="block text-center rounded-lg ml-4 px-3.5 py-2.5 text-md"
+    [ngClass]="{'cursor-pointer bg-black text-white hover:shadow-md transition': enviando, 
+                'cursor-default border border-black bg-white text-black transition': !enviando}"
+    (click)="pararDatos()">{{ enviando? 'Parar datos': 'Parado'}}</a>
 </div>
 <div class="flex mb-4">
   <app-overview-card

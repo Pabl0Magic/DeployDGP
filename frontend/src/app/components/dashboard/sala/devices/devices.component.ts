@@ -35,7 +35,11 @@ export class DevicesComponent implements OnInit {
         this.luces = data;
       }
     );
-    // Ventiladores
+    this.devicesService.getAllVentilators(this.salaName).subscribe(
+      (data: any) => {
+        this.ventiladores = data;
+      }
+    );
   }
 
   onDeviceDeleted(eventData: { deviceId: number, deviceType: string }) {

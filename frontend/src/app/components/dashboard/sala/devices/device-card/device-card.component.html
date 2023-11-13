@@ -1,9 +1,13 @@
 <div class="item-wrapper flex flex-col justify-between h-full">
   <div class="item-wrapper basis-3/12 h-3/12">
-    <div class="item-wrapper flex justify-between">
-        <div class="item-wrapper text-md tracking-tight ml-4 mt-2">{{name}}</div>
-        <a class="bg-transparent mr-2 rounded-lg px-3.5 py-1.5 hover:bg-black hover:bg-opacity-5 transition" 
-          routerLink="../device-chart/{{deviceType}}/{{id}}">Ver</a>
+    <div class="item-wrapper flex justify-between items-center">
+        <div class="item-wrapper text-md tracking-tight ml-3 mt-2">{{name}}</div>
+        <div class="bg-transparent">
+          <a class="text-sm bg-transparent rounded-lg px-3 py-1.5 hover:bg-black hover:bg-opacity-5 transition" 
+            routerLink="../modify-device/{{deviceType}}/{{id}}">Mod.</a>
+          <a class="text-sm bg-transparent rounded-lg px-3 py-1.5 hover:bg-black hover:bg-opacity-5 transition" 
+            routerLink="../device-chart/{{deviceType}}/{{id}}">Ver</a>
+        </div>
     </div>
   </div>
   <div class="item-wrapper flex flex-row justify-around w-full h-7/12">

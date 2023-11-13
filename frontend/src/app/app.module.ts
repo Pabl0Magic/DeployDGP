@@ -24,6 +24,7 @@ import { DeviceCardComponent } from './components/dashboard/sala/devices/device-
 import { NewDeviceComponent } from './components/dashboard/sala/devices/new-device/new-device.component';
 import { DevicesChartComponent } from './components/dashboard/sala/devices/devices-chart/devices-chart.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ModifyDeviceComponent } from './components/dashboard/sala/devices/modify-device/modify-device.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     DeviceCardComponent,
     NewDeviceComponent,
     DevicesChartComponent,
+    ModifyDeviceComponent,
   ],
   imports: [
     BrowserModule,
