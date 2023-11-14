@@ -19,7 +19,6 @@ repos:
       args:
         [
           "-rn", # Only display messages
-          "--disable=too-few-public-methods",
-          "backend/heroku-django-template-master/dgp/",
-          "backend/heroku-django-template-master/project/",
+          "--disable=too-few-public-methods"
         ]
+      files: ^backend/

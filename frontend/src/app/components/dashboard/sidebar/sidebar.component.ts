@@ -7,7 +7,7 @@ import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {  
+export class SidebarComponent implements OnInit {
   elements: NodeListOf<HTMLElement> | null = null;
   salas: string[] = [];
 

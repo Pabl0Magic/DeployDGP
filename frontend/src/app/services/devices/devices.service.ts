@@ -66,7 +66,7 @@ export class DevicesService {
   switchDevice(deviceType: string, deviceId: number, newValue: boolean, salaName: string) {
     const isOpen = newValue? 'True': 'False';
     const formData = new FormData();
-    
+
     if (deviceType === 'puerta' || deviceType === 'ventana') formData.append('isOpen', isOpen);
     else formData.append('isOn', isOpen);
 

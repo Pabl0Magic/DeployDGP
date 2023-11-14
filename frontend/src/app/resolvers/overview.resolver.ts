@@ -12,5 +12,5 @@ export class OverviewResolver {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const salaName = route.parent?.params.salaName;
     return this.salaInfoService.getSala(salaName);
-  } 
+  }
 }

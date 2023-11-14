@@ -29,7 +29,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
     this.chart = new Chart("lineChart", {
       type: 'line',
       data: {
-        labels: this.labels, 
+        labels: this.labels,
 	      datasets: [
           {
             label: "Score",
@@ -39,7 +39,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
             borderColor: '#6d28d9',
             pointBackgroundColor: '#6d28d9',
             backgroundColor: gradient
-          }  
+          }
         ]
       },
       options: {
@@ -91,7 +91,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
             title: {
               display: false
             },
-            
+
           },
           y: {
             type: 'linear',
@@ -120,7 +120,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
         const minutes = date.getMinutes().toString().padStart(2, '0');
         const seconds = date.getSeconds().toString().padStart(2, '0');
         const formattedTime = `${hours}:${minutes}:${seconds}`;
-      
+
         return {
           value: entry.value,
           formattedTime: formattedTime,
@@ -138,7 +138,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
       const hours = currentDate.getHours().toString().padStart(2, '0');
       const minutes = currentDate.getMinutes().toString().padStart(2, '0');
       const seconds = currentDate.getSeconds().toString().padStart(2, '0');
-      
+
       this.chart.data.datasets[0].data.push(data);
       this.chart.data.labels.push(`${hours}:${minutes}:${seconds}`);
       console.log(this.salaName)
@@ -170,7 +170,7 @@ export class OverviewChartComponent implements AfterViewInit, OnInit, OnDestroy 
     const b = parseInt(hex.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
-  
+
   ngOnChanges(changes: SimpleChanges) {
     this.chart.destroy();
     this.data = [];

@@ -20,7 +20,7 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.title = this.dataType[0].toUpperCase() + this.dataType.slice(1);
-    
+
     this.salaName = this.route.parent?.snapshot.params.salaName;
 
     this.salaInfoService.getLatestData(this.salaName, this.dataType).subscribe((data) => {

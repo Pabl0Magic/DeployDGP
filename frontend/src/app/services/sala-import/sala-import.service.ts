@@ -14,6 +14,6 @@ export class SalaImportService {
     const formData = new FormData();
     formData.append('file', file);
 
-    
+
   }
 }
