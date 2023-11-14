@@ -13,8 +13,9 @@
         <p class="bg-stone-200 text-gray-500 rounded-lg px-2">{{salas.length}}</p>
       </li>
       <li class="mx-8">
-        <a class="block cursor-pointer text-left text-md items-center px-6 py-3 rounded-lg bg-stone-50 hover:bg-stone-200 transition"
-          *ngFor="let sala of salas" routerLink="sala/{{ sala }}/overview" (click)="animateClick()">{{sala}}</a>
+        <a class="block cursor-pointer text-left text-md items-center px-6 py-3 rounded-lg transition"
+          [ngClass]="{'bg-stone-200': selectedSala === sala, 'bg-stone-50 hover:bg-stone-200': selectedSala !== sala}"
+          *ngFor="let sala of salas" routerLink="sala/{{ sala }}/overview" (click)="animateClick(); changeSalaSelected(sala)">{{sala}}</a>
       </li>
     </ul>
     <ul class="space-y-4 w-full bg-stone-50">

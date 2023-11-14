@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { gsap } from 'gsap';
 import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
 
@@ -7,9 +8,10 @@ import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {  
+export class SidebarComponent implements OnInit {
   elements: NodeListOf<HTMLElement> | null = null;
   salas: string[] = [];
+  selectedSala: string = "";
 
   constructor(private sidebarService: SidebarService) {}
 
@@ -19,7 +21,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  animateClick() {
+  animateClick() {    
     this.elements = document.querySelectorAll('.dashboard');
 
     gsap.fromTo(this.elements, {
@@ -31,5 +33,9 @@ export class SidebarComponent implements OnInit {
       duration: 2,
       ease: 'power4.out',
     });
+  }
+
+  changeSalaSelected(salaName: string) {
+    this.selectedSala = salaName;
   }
 }
