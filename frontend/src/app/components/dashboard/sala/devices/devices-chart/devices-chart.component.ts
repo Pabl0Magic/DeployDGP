@@ -78,6 +78,26 @@ export class DevicesChartComponent implements OnInit {
           legend: {
             display: false,
           },
+          tooltip: {
+            backgroundColor: '#fafafa',
+            borderColor: '#fafafa',
+            borderWidth: 2,
+            titleColor: 'black',
+            displayColors: false,
+            bodyColor: 'black',
+            padding: 14,
+            caretSize: 0,
+            titleFont: {
+              size: 17,
+              family: 'Inter',
+              weight: 'normal'
+            },
+            bodyFont: {
+              size: 13,
+              family: 'Inter',
+            },
+            yAlign: 'bottom'
+          }
         }
       }
     });
