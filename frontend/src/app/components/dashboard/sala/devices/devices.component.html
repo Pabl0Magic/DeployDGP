@@ -45,7 +45,7 @@
     <div class="flex items-end h-12 mt-4">
       <p class="mr-6 text-2xl">Ventiladores</p>
       <a class="block cursor-pointer text-center rounded-xl bg-rose-50 text-rose-500 px-3.5 py-2.5 text-md hover:bg-rose-100 hover:shadow-md transition"
-      routerLink="../new-device/ventilador">+ Añadir ventilador</a>
+      routerLink="../new-device/ventilador">+ Añadir ventiladores</a>
     </div>
     <div class="flex flex-row flex-wrap">
       <app-device-card *ngFor="let ventilador of ventiladores" (deleted)="onDeviceDeleted($event)" (switched)="onDeviceSwitched($event)"
