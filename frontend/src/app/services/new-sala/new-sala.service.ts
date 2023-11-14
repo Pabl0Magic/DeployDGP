@@ -25,7 +25,7 @@ export class NewSalaService {
     return this.http.patch<any>(this.API_URL + encodeURIComponent(salaName) + "/", formData);
   }
 
-  deleteSala(salaName: string) { 
+  deleteSala(salaName: string) {
     return this.http.delete<any>(this.API_URL + encodeURIComponent(salaName) + "/");
   }
 }

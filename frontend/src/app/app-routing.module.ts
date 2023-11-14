@@ -13,9 +13,9 @@ import { ModifyDeviceComponent } from './components/dashboard/sala/devices/modif
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { 
-    path: 'dashboard', 
-    component: DashboardComponent, 
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
     children: [
       {
         path: '',

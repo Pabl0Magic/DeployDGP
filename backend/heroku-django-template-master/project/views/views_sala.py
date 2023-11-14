@@ -145,6 +145,7 @@ def export_data(request):
 
 
 class Home(generic.ListView):
+    # Comentario generico
     model = Room
     template_name = "home.html"
 

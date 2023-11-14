@@ -21,7 +21,7 @@ export class NewDeviceComponent {
 
   ngOnInit() {
     this.deviceType = this.route.snapshot.params.deviceType;
-    
+
     this.deviceForm = this.formBuilder.group({
       name: ['', Validators.required],
     })
