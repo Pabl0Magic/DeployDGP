@@ -30,10 +30,10 @@ export class DevicesChartComponent implements OnInit {
     this.salaName = this.route.parent?.snapshot.params.salaName;
     this.deviceType = this.route.snapshot.params.deviceType;
     this.deviceId = this.route.snapshot.params.deviceId;
-    
+
     this.devicesService.getActivity(this.salaName, this.deviceType, this.deviceId).subscribe((data: any) => this.getActivityCallback(data));
   }
-  
+
   processData() {
     this.data.activities = this.data.activities.slice(-10);
     this.data.activities.forEach((activity: any) => {

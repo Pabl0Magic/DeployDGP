@@ -14,7 +14,7 @@ export class OverviewComponent implements OnInit {
   personasSubscription!: Subscription;
   temperaturaSubscription!: Subscription;
   co2Subscription!: Subscription;
-  
+
   constructor(private route: ActivatedRoute, private salaInfoService: SalaInfoService) {}
 
   ngOnInit() {
@@ -25,7 +25,7 @@ export class OverviewComponent implements OnInit {
     this.personasSubscription = interval(3000).pipe(
       switchMap(() => this.salaInfoService.sendData('personas', this.salaName))
     ).subscribe()
-    
+
     this.temperaturaSubscription = interval(3000).pipe(
       switchMap(() => this.salaInfoService.sendData('temperatura', this.salaName))
     ).subscribe()

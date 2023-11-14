@@ -2,7 +2,7 @@
   <p class="flex-none inline-block py-2 mb-2 text-4xl rounded-xl text-black">Importa un archivo</p>
 </div>
 <div class="flex justify-center items-center">
-  <form class="flex flex-col my-8 w-5/12 space-y-4" [formGroup]="fileForm" (ngSubmit)="onSubmit($event)">  
+  <form class="flex flex-col my-8 w-5/12 space-y-4" [formGroup]="fileForm" (ngSubmit)="onSubmit($event)">
     <div class="flex items-center justify-center w-full">
       <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-stone-50">
           <div class="flex flex-col items-center justify-center pt-5 pb-6 bg-stone-50">
@@ -11,12 +11,12 @@
               <p class="text-xs text-gray-500 bg-stone-50">Tu archivo .XLSX</p>
           </div>
           <input class="hidden" id="dropzone-file" accept=".XLSX"
-            (change)="onFileChange($event)" formControlName="file" type="file" name="fileInput">  
-          <span class="bg-stone-50 text-sm text-gray-500">{{fileName}}</span>  
+            (change)="onFileChange($event)" formControlName="file" type="file" name="fileInput">
+          <span class="bg-stone-50 text-sm text-gray-500">{{fileName}}</span>
       </label>
-    </div> 
-    
-    <input class="block text-center rounded-lg text-white px-3.5 py-2.5 text-md hover:shadow-md transition" 
+    </div>
+
+    <input class="block text-center rounded-lg text-white px-3.5 py-2.5 text-md hover:shadow-md transition"
     [ngClass]="{ 'bg-zinc-500 cursor-not-allowed': isSubmitting, 'bg-black cursor-pointer': !isSubmitting }" type="submit" value="Importar archivo">
   </form>
 </div>

@@ -1,20 +1,20 @@
 <div class="flex items-center h-12 mt-4">
-  <a  class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
+  <a  class="block cursor-pointer text-center rounded-lg bg-black text-white px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition"
     (click)="sendData()">Enviar datos</a>
-    <a  class="block cursor-pointer text-center rounded-lg bg-black text-white ml-4 px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition" 
+    <a  class="block cursor-pointer text-center rounded-lg bg-black text-white ml-4 px-3.5 py-2.5 text-md hover:bg-black hover:shadow-md transition"
     (click)="pararDatos()">Parar datos</a>
 </div>
 <div class="flex mb-4">
   <app-overview-card
-    class="flex grow flex-col text-black text-lg hover:cursor-pointer justify-between h-44 my-4 mr-2 p-4" 
+    class="flex grow flex-col text-black text-lg hover:cursor-pointer justify-between h-44 my-4 mr-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'personas', 'bg-zinc-100': dataType != 'personas'}"
     title="Personas" [salaName]="salaName" dataType="personas" unit="personas" (click)="changeDataType('personas')"></app-overview-card>
-  <app-overview-card 
-    class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4" 
+  <app-overview-card
+    class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'temperatura', 'bg-zinc-100': dataType != 'temperatura'}"
     title="Temperatura" [salaName]="salaName" dataType="temperatura" unit="°C" (click)="changeDataType('temperatura')"></app-overview-card>
-  <app-overview-card 
-    class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4" 
+  <app-overview-card
+    class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'co2', 'bg-zinc-100': dataType != 'co2'}"
     title="CO2" [salaName]="salaName" dataType="CO2" unit="ppm" (click)="changeDataType('co2')"></app-overview-card>
 </div>
