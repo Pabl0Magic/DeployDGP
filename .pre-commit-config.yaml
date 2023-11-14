@@ -9,15 +9,17 @@ repos:
     rev: 22.10.0
     hooks:
     -   id: black
-
-  - repo: local
-    hooks:
-    -   id: pylint
-        name: pylint
-        entry: pylint
-        language: system
-        types: [python]
-        args: 
-          [
-            "-rn",
-          ]
+- repo: local
+  hooks:
+    - id: pylint
+      name: pylint
+      entry: pylint
+      language: system
+      types: [python]
+      args:
+        [
+          "-rn", # Only display messages
+          "--disable=too-few-public-methods",
+          "backend/heroku-django-template-master/dgp/*.py",
+          "backend/heroku-django-template-master/project/*.py",
+        ]
