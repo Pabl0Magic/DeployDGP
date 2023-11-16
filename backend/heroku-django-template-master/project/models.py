@@ -8,13 +8,8 @@ from django.db import models
 
 class Room(models.Model):
     """Room model"""
-
     name = models.CharField(max_length=30, primary_key=True)
     size = models.FloatField()
-    doorNumber = models.FloatField(default=0)
-    windowNumber = models.FloatField(default=0)
-    lightsBool = models.BooleanField(default=False)
-    ventilatorBool = models.BooleanField(default=False)
 
 
 class Ventilator(models.Model):
