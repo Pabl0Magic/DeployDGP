@@ -1,6 +1,7 @@
 """ Models for the project """
 
 # from typing_extensions import Self
+from django.utils import timezone
 from django.db import models
 
 # Create your models here.
@@ -8,6 +9,7 @@ from django.db import models
 
 class Room(models.Model):
     """Room model"""
+
     name = models.CharField(max_length=30, primary_key=True)
     size = models.FloatField()
 
@@ -52,7 +54,7 @@ class Door(models.Model):
 class RoomPeople(models.Model):
     """Room people model"""
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     people = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
@@ -69,7 +71,7 @@ class RoomPeople(models.Model):
 class RoomTemperature(models.Model):
     """Room temperature model"""
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     temperature = models.FloatField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
@@ -87,7 +89,7 @@ class RoomTemperature(models.Model):
 class RoomCO2(models.Model):
     """Room CO2 model"""
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     co2 = models.FloatField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
@@ -105,7 +107,7 @@ class RoomCO2(models.Model):
 class VentilatorIsOn(models.Model):
     """Ventilator is on model"""
 
-    timestamp = models.DateTimeField()  # auto_now_add=True
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     isOn = models.BooleanField(default=False)
     ventilator = models.ForeignKey(Ventilator, on_delete=models.CASCADE)
 
@@ -123,7 +125,7 @@ class VentilatorIsOn(models.Model):
 class LightIsOn(models.Model):
     """Light is on model"""
 
-    timestamp = models.DateTimeField()  # auto_now_add=True
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     isOn = models.BooleanField(default=False)
     light = models.ForeignKey(Light, on_delete=models.CASCADE)
 
@@ -140,7 +142,7 @@ class LightIsOn(models.Model):
 class WindowOpen(models.Model):
     """Window open model"""
 
-    timestamp = models.DateTimeField()  # auto_now_add=True
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     isOpen = models.BooleanField(default=False)
     window = models.ForeignKey(Window, on_delete=models.CASCADE)
 
@@ -158,7 +160,7 @@ class WindowOpen(models.Model):
 class DoorOpen(models.Model):
     """Door open model"""
 
-    timestamp = models.DateTimeField()  # auto_now_add=True
+    timestamp = models.DateTimeField(default=timezone.now)  # auto_now_add=True
     isOpen = models.BooleanField(default=False)
     door = models.ForeignKey(Door, on_delete=models.CASCADE)
 

@@ -34,7 +34,6 @@ class WindowSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
 class LightSerializer(serializers.ModelSerializer):
     """Serializer for Light Model"""
 
@@ -46,7 +45,10 @@ class LightSerializer(serializers.ModelSerializer):
 
 
 class VentilatorSerializer(serializers.ModelSerializer):
+    """Serializer for Ventilator Model"""
 
     class Meta:
+        """Meta class for the serializer"""
+
         model = Ventilator
         fields = "__all__"

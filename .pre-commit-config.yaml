@@ -15,6 +15,7 @@ repos:
       name: pylint
       entry: pylint
       language: system
+      exclude: backend/heroku-django-template-master/project/migrations/
       types: [python]
       args:
         [
@@ -22,5 +23,8 @@ repos:
           "--disable=too-few-public-methods",
           "backend/heroku-django-template-master/dgp/",
           "backend/heroku-django-template-master/project/",
+          "--load-plugins=pylint_django",
+          "--ignore=backend/heroku-django-template-master/project/migrations/",
+          "--disable=django-not-configured",
         ]
       files: ^backend/
