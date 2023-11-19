@@ -1,6 +1,8 @@
 """ Test for models of the project """
 
 from django.test import TestCase
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 from ..models import (
     RoomPeople,
     Room,
@@ -49,6 +51,9 @@ class ModelTests(TestCase):
         room = Room.objects.get(name="SALA")
         self.assertEqual(room.name, "SALA")
         self.assertEqual(room.size, 60)
+
+        with self.assertRaises(ObjectDoesNotExist):
+            _ = Room.objects.get(name="SALA3")
 
     def test_room_change(self):
         """Room change"""
@@ -116,3 +121,84 @@ class ModelTests(TestCase):
         self.assertEqual(door.name, "Door1")
         self.assertEqual(door.isOpen, True)
         self.assertEqual(door.bloqueada, True)
+
+    def test_room_timestamps(self):
+        "Get room timestamps"
+        room = Room.objects.get(name="SALA")
+        people = RoomPeople.objects.get(room=room)
+        temperature = RoomTemperature.objects.get(room=room)
+        co2 = RoomCO2.objects.get(room=room)
+        self.assertLess(people.timestamp, timezone.now())
+        self.assertLess(temperature.timestamp, timezone.now())
+        self.assertLess(co2.timestamp, timezone.now())
+        self.assertEqual(people.people, 2)
+        self.assertEqual(temperature.temperature, 15)
+        self.assertEqual(co2.co2, 700)
+
+    def test_ventilator_timestamp(self):
+        "Get ventilator timestamp"
+        ventilator = Ventilator.objects.get(id=1)
+        is_on = VentilatorIsOn.objects.get(ventilator=ventilator)
+        self.assertLess(is_on.timestamp, timezone.now())
+        self.assertEqual(is_on.isOn, False)
+
+    def test_light_timestamp(self):
+        "Get light timestamp"
+        light = Light.objects.get(id=1)
+        is_on = LightIsOn.objects.get(light=light)
+        self.assertLess(is_on.timestamp, timezone.now())
+        self.assertEqual(is_on.isOn, False)
+
+    def test_window_timestamp(self):
+        "Get window timestamp"
+        window = Window.objects.get(id=1)
+        is_open = WindowOpen.objects.get(window=window)
+        self.assertLess(is_open.timestamp, timezone.now())
+        self.assertEqual(is_open.isOpen, False)
+
+    def test_door_timestamp(self):
+        "Get door timestamp"
+        door = Door.objects.get(id=1)
+        is_open = DoorOpen.objects.get(door=door)
+        self.assertLess(is_open.timestamp, timezone.now())
+        self.assertEqual(is_open.isOpen, False)
+
+    def test_delete_cascade(self):
+        "Delete on cascade"
+        room = Room.objects.get(name="SALA")
+        room.delete()
+
+        room2 = Room.objects.get(name="SALA2")
+        room2.delete()
+
+        with self.assertRaises(ObjectDoesNotExist):
+            _ = Room.objects.get(name="SALA")
+        with self.assertRaises(ObjectDoesNotExist):
+            _ = Ventilator.objects.get(id=1)
+        with self.assertRaises(ObjectDoesNotExist):
+            _ = Light.objects.get(id=1)
+        with self.assertRaises(ObjectDoesNotExist):
+            _ = Window.objects.get(id=1)
+        # with self.assertRaises(ObjectDoesNotExist):
+        #  _ = Door.objects.get(id=1)
+
+        people = RoomPeople.objects.all()
+        self.assertEqual(len(people), 0)
+
+        co2 = RoomCO2.objects.all()
+        self.assertEqual(len(co2), 0)
+
+        temperature = RoomTemperature.objects.all()
+        self.assertEqual(len(temperature), 0)
+
+        onv = VentilatorIsOn.objects.all()
+        self.assertEqual(len(onv), 0)
+
+        onl = LightIsOn.objects.all()
+        self.assertEqual(len(onl), 0)
+
+        openw = WindowOpen.objects.all()
+        self.assertEqual(len(openw), 0)
+
+        # opend = DoorOpen.objects.all()
+        # self.assertEqual(len(opend), 0)
