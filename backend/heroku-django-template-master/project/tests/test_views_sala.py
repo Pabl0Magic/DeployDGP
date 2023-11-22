@@ -4,8 +4,8 @@ from django.test import TestCase, Client
 from ..models import Room
 
 
-class ModelTests(TestCase):
-    """Test class for models of the project"""
+class SalaTests(TestCase):
+    """Test class for salas"""
 
     def setUp(self):
         """Set up"""
