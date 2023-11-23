@@ -74,7 +74,10 @@ class SalaTests(TestCase):
 
         Room.objects.create(name="SALA", size=60)
 
-        # REVISAR
-        response = self.client.patch("/project/room/SALA/")
+        response = self.client.patch(
+            "/project/room/SALA/",
+            {"name": "SALA1", "size": 80},
+            content_type="application/json",
+        )
 
         self.assertEqual(response.status_code, 200)

@@ -58,7 +58,16 @@ class VentiladorTests(TestCase):
 
     def test_ventilator_patch(self):
         """Test for ventilator patch"""
-        # REVISAR
+
+        Ventilator.objects.create(id=1, room=Room.objects.get(name="SALA"))
+
+        response = self.client.patch(
+            "/project/room/SALA/ventilator/1/",
+            {"id": "2"},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
 
     def test_ventilator_add_ts(self):
         """Test for ventilator timestamp add"""

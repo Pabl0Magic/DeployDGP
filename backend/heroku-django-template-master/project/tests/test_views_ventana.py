@@ -58,7 +58,14 @@ class VentanaTests(TestCase):
 
     def test_window_patch(self):
         """Test for window patch"""
-        # REVISAR
+
+        Window.objects.create(id=1, room=Room.objects.get(name="SALA"))
+
+        response = self.client.patch(
+            "/project/room/SALA/window/1/", {"id": "2"}, content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 200)
 
     def test_window_add_ts(self):
         """Test for window timestamp add"""
