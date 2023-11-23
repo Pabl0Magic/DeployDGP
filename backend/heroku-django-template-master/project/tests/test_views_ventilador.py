@@ -21,21 +21,18 @@ class VentiladorTests(TestCase):
 
         Ventilator.objects.create(id=1, room=Room.objects.get(name="SALA"))
 
-        response = self.client.get("/project/room/all/")
-
         response = self.client.get("/project/room/SALA/ventilator/all/")
+
+        self.assertEqual(response.status_code, 200)
 
     def test_ventilator_create(self):
         """Test for ventilator create"""
 
-        # response = self.client.post(
-        #    "/project/room/SALA/ventilator/create/",
-        #    {"id": 1, "room": Room.objects.get(name="SALA")}
-        # )
+        response = self.client.post(
+            "/project/room/SALA/ventilator/create/", {"id": 1, "room": "SALA"}
+        )
 
-        # print(response)
-
-        # self.assertEqual(response.status_code, 201)"""
+        self.assertEqual(response.status_code, 201)
 
     def test_ventilator_get(self):
         """Test for ventilator get"""
