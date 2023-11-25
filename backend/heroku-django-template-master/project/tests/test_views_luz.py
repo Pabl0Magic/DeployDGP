@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from ..models import Room, Light
 
 
-class VentanaTests(TestCase):
+class LuzTests(TestCase):
     """Test class for ventana"""
 
     def setUp(self):
