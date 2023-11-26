@@ -58,7 +58,7 @@ class RoomPeople(models.Model):
     people = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
@@ -75,7 +75,7 @@ class RoomTemperature(models.Model):
     temperature = models.FloatField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
@@ -93,7 +93,7 @@ class RoomCO2(models.Model):
     co2 = models.FloatField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
@@ -111,7 +111,7 @@ class VentilatorIsOn(models.Model):
     isOn = models.BooleanField(default=False)
     ventilator = models.ForeignKey(Ventilator, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
@@ -129,7 +129,7 @@ class LightIsOn(models.Model):
     isOn = models.BooleanField(default=False)
     light = models.ForeignKey(Light, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
@@ -146,7 +146,7 @@ class WindowOpen(models.Model):
     isOpen = models.BooleanField(default=False)
     window = models.ForeignKey(Window, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
@@ -164,7 +164,7 @@ class DoorOpen(models.Model):
     isOpen = models.BooleanField(default=False)
     door = models.ForeignKey(Door, on_delete=models.CASCADE)
 
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """Meta class for the model"""
 
         constraints = [
