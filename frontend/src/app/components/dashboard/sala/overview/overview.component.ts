@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, interval, switchMap } from 'rxjs';
+import { DevicesService } from 'src/app/services/devices/devices.service';
 import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
 @Component({
@@ -16,7 +17,11 @@ export class OverviewComponent implements OnInit {
   co2Subscription!: Subscription;
   enviando: boolean = false;
 
-  constructor(private route: ActivatedRoute, private salaInfoService: SalaInfoService) {}
+  showAlarm: boolean = false;
+
+  constructor(private route: ActivatedRoute, 
+              private salaInfoService: SalaInfoService,
+              private devicesService: DevicesService) {}
 
   ngOnInit() {
     this.salaName = this.route.parent?.snapshot.params.salaName;
@@ -54,5 +59,21 @@ export class OverviewComponent implements OnInit {
     if (this.personasSubscription) this.personasSubscription.unsubscribe();
     if (this.temperaturaSubscription) this.temperaturaSubscription.unsubscribe();
     if (this.co2Subscription) this.co2Subscription.unsubscribe();
+  }
+
+  handleShowAlarm(value: boolean) {
+    this.showAlarm = value;
+
+    this.salaName = this.route.parent?.snapshot.params.salaName;
+    console.log(this.salaName)
+
+    this.devicesService.getAllDoors(this.salaName).subscribe(
+      (data: any) => {
+        data.forEach((puerta: any) => {
+          if (puerta.isOpen)
+            this.devicesService.switchDevice("puerta", puerta.id, false, this.salaName).subscribe();
+        });
+      }
+    );
   }
 }

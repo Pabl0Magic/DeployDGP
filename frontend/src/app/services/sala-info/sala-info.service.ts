@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, interval, switchMap } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,7 @@ export class SalaInfoService {
     }
     if (type === 'temperatura') {
       const formData = new FormData();
-      const temperatura = Math.floor(Math.random() * 16) + 10;
+      const temperatura = Math.floor(Math.random() * 21) + 60;
       formData.append('temperature', String(temperatura));
       return this.http.post(this.httpURL + encodeURIComponent(salaName) + '/temperature/add/', formData)
     }

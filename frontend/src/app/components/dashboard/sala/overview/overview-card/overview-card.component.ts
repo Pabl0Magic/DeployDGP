@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
@@ -16,6 +16,8 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
   receivedData: any;
   private dataSubscription: any;
 
+  @Output() showAlarm: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+
   constructor(private salaInfoService: SalaInfoService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -29,6 +31,11 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
 
     this.dataSubscription = this.salaInfoService.onDataMessage(this.dataType).subscribe((data) => {
       this.receivedData = data;
+
+      if (this.dataType == 'temperatura' && data >= 70)
+        this.showAlarm.emit(true);
+      else
+        this.showAlarm.emit(false);
     });
   }
 

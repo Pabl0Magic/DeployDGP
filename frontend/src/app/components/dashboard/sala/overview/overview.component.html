@@ -8,6 +8,11 @@
                 'cursor-default border border-black bg-white text-black transition': !enviando}"
     (click)="pararDatos()">{{ enviando? 'Parar datos': 'Parado'}}</a>
 </div>
+<div class="flex">
+  <app-alarma *ngIf="showAlarm"
+  class="flex grow flex-col text-black text-lg justify-between h-48 mb-4 mt-6 mr-2 p-4
+        bg-red-100 border border-red-500"></app-alarma>
+</div>
 <div class="flex mb-4">
   <app-overview-card
     class="flex grow flex-col text-black text-lg hover:cursor-pointer justify-between h-44 my-4 mr-2 p-4"
@@ -16,7 +21,8 @@
   <app-overview-card
     class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'temperatura', 'bg-zinc-100': dataType != 'temperatura'}"
-    title="Temperatura" [salaName]="salaName" dataType="temperatura" unit="°C" (click)="changeDataType('temperatura')"></app-overview-card>
+    title="Temperatura" [salaName]="salaName" dataType="temperatura" unit="°C" (click)="changeDataType('temperatura')"
+    (showAlarm)="handleShowAlarm($event)"></app-overview-card>
   <app-overview-card
     class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'co2', 'bg-zinc-100': dataType != 'co2'}"
