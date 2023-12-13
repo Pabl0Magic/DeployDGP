@@ -76,4 +76,36 @@ export class OverviewComponent implements OnInit {
       }
     );
   }
+
+  handleSwitchLights(value: boolean) {
+    if (value) {
+      console.log(value)
+      this.devicesService.getAllLights(this.salaName).subscribe(
+        (data: any) => {
+          data.forEach((luz: any) => {
+            if (!luz.isOn)
+              this.devicesService.switchDevice("luz", luz.id, true, this.salaName).subscribe();
+          });
+        }
+      );
+    } else {
+      this.devicesService.getAllLights(this.salaName).subscribe(
+        (data: any) => {
+          data.forEach((luz: any) => {
+            if (luz.isOn)
+              this.devicesService.switchDevice("luz", luz.id, false, this.salaName).subscribe();
+          });
+        }
+      );
+
+      this.devicesService.getAllVentilators(this.salaName).subscribe(
+        (data: any) => {
+          data.forEach((ventilador: any) => {
+            if (ventilador.isOn)
+              this.devicesService.switchDevice("ventilador", ventilador.id, false, this.salaName).subscribe();
+          });
+        }
+      );
+    }
+  }
 }

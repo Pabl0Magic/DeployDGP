@@ -43,7 +43,7 @@ export class SalaInfoService {
   sendData(type: string, salaName: string) {
     if (type === 'personas') {
       const formData = new FormData();
-      const personas = Math.floor(Math.random() * 11);
+      const personas = Math.floor(Math.random() * 1);
       formData.append('people', String(personas));
       return this.http.post(this.httpURL + encodeURIComponent(salaName) + '/people/add/', formData)
     }
@@ -55,7 +55,7 @@ export class SalaInfoService {
     }
     else {
       const formData = new FormData();
-      const co2 = Math.floor(Math.random() * 201) + 600;
+      const co2 = Math.floor(Math.random() * 51) + 980;
       formData.append('co2', String(co2));
       return this.http.post(this.httpURL + encodeURIComponent(salaName) + '/co2/add/', formData)
     }

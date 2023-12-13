@@ -17,7 +17,8 @@
   <app-overview-card
     class="flex grow flex-col text-black text-lg hover:cursor-pointer justify-between h-44 my-4 mr-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'personas', 'bg-zinc-100': dataType != 'personas'}"
-    title="Personas" [salaName]="salaName" dataType="personas" unit="personas" (click)="changeDataType('personas')"></app-overview-card>
+    title="Personas" [salaName]="salaName" dataType="personas" unit="personas" (click)="changeDataType('personas')"
+    (switchLights)="handleSwitchLights($event)"></app-overview-card>
   <app-overview-card
     class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'temperatura', 'bg-zinc-100': dataType != 'temperatura'}"

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DevicesService } from 'src/app/services/devices/devices.service';
 import { SalaInfoService } from 'src/app/services/sala-info/sala-info.service';
 
 @Component({
@@ -17,8 +18,9 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
   private dataSubscription: any;
 
   @Output() showAlarm: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output() switchLights: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
-  constructor(private salaInfoService: SalaInfoService, private route: ActivatedRoute) {}
+  constructor(private salaInfoService: SalaInfoService, private route: ActivatedRoute, private devicesService: DevicesService) {}
 
   ngOnInit() {
     this.title = this.dataType[0].toUpperCase() + this.dataType.slice(1);
@@ -36,6 +38,12 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
         this.showAlarm.emit(true);
       else
         this.showAlarm.emit(false);
+
+      if (this.dataType == 'personas' && data == 0) {
+        this.switchLights.emit(false);
+      } else {
+        this.switchLights.emit(true);
+      }
     });
   }
 
