@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,9 @@ export class SalaInfoService {
   private httpURL = "http://127.0.0.1:8000/project/room/";
   private websockets: { [key: string]: WebSocket } = {};
   private subjects: { [key: string]: Subject<any> } = {};
+
+  private color = new BehaviorSubject<string>('green');
+  color$ = this.color.asObservable();
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
     const salaName = this.route.parent?.snapshot.params.salaName;
@@ -43,7 +46,7 @@ export class SalaInfoService {
   sendData(type: string, salaName: string) {
     if (type === 'personas') {
       const formData = new FormData();
-      const personas = Math.floor(Math.random() * 1);
+      const personas = Math.floor(Math.random() * 3);
       formData.append('people', String(personas));
       return this.http.post(this.httpURL + encodeURIComponent(salaName) + '/people/add/', formData)
     }
@@ -55,7 +58,7 @@ export class SalaInfoService {
     }
     else {
       const formData = new FormData();
-      const co2 = Math.floor(Math.random() * 51) + 980;
+      const co2 = Math.floor(Math.random() * 500) + 750;
       formData.append('co2', String(co2));
       return this.http.post(this.httpURL + encodeURIComponent(salaName) + '/co2/add/', formData)
     }
@@ -69,5 +72,9 @@ export class SalaInfoService {
     if (type === 'personas') return this.http.get<any>(this.httpURL + encodeURIComponent(salaName) + '/people/last10/');
     if (type === 'temperatura') return this.http.get<any>(this.httpURL + encodeURIComponent(salaName) + '/temperature/last10/');
     else return this.http.get<any>(this.httpURL + encodeURIComponent(salaName) + '/co2/last10/');
+  }
+
+  changeColor(color: string) {
+    this.color.next(color);
   }
 }

@@ -108,4 +108,26 @@ export class OverviewComponent implements OnInit {
       );
     }
   }
+
+  handleVentilate(value: boolean) {
+    if (value) {
+      this.devicesService.getAllWindows(this.salaName).subscribe(
+        (data: any) => {
+          data.forEach((ventana: any) => {
+            if (!ventana.isOpen)
+              this.devicesService.switchDevice("ventana", ventana.id, true, this.salaName).subscribe();
+          });
+        }
+      );
+
+      this.devicesService.getAllVentilators(this.salaName).subscribe(
+        (data: any) => {
+          data.forEach((ventilator: any) => {
+            if (!ventilator.isOn)
+              this.devicesService.switchDevice("ventilador", ventilator.id, true, this.salaName).subscribe();
+          });
+        }
+      );
+    }
+  }
 }

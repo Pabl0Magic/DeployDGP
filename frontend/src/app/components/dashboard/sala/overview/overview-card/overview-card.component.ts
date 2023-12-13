@@ -19,6 +19,7 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
 
   @Output() showAlarm: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() switchLights: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output() ventilate: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
   constructor(private salaInfoService: SalaInfoService, private route: ActivatedRoute, private devicesService: DevicesService) {}
 
@@ -39,10 +40,21 @@ export class OverviewCardComponent implements OnInit, OnDestroy {
       else
         this.showAlarm.emit(false);
 
-      if (this.dataType == 'personas' && data == 0) {
+      if (this.dataType == 'personas' && data == 0)
         this.switchLights.emit(false);
-      } else {
+      else
         this.switchLights.emit(true);
+      
+      if (this.dataType == 'CO2' && data > 1000) {
+        this.ventilate.emit(true);
+        this.salaInfoService.changeColor('red');
+      } else {
+        this.ventilate.emit(false);
+        
+        if (data > 800)
+          this.salaInfoService.changeColor('yellow');
+        else
+          this.salaInfoService.changeColor('green');
       }
     });
   }

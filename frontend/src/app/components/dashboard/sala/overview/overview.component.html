@@ -27,7 +27,8 @@
   <app-overview-card
     class="flex grow flex-col text-lg hover:cursor-pointer justify-between h-44 my-4 mx-2 p-4"
     [ngClass]="{'shadow-md bg-black text-white': dataType == 'co2', 'bg-zinc-100': dataType != 'co2'}"
-    title="CO2" [salaName]="salaName" dataType="CO2" unit="ppm" (click)="changeDataType('co2')"></app-overview-card>
+    title="CO2" [salaName]="salaName" dataType="CO2" unit="ppm" (click)="changeDataType('co2')"
+    (ventilate)="handleVentilate($event)"></app-overview-card>
 </div>
 <div>
   <app-overview-chart [dataType]="dataType" [salaName]="salaName"></app-overview-chart>

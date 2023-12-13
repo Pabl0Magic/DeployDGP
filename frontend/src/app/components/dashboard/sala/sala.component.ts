@@ -13,6 +13,7 @@ export class SalaComponent implements OnInit {
   isOverviewActive = true;
   name: string = "";
   size: number = 0;
+  color: string = "green";
 
   constructor(private route: ActivatedRoute, private salaInfoService: SalaInfoService) {}
 
@@ -23,6 +24,11 @@ export class SalaComponent implements OnInit {
       this.name = data.name;
       this.size = data.size;
     });
+
+    this.salaInfoService.color$.subscribe((color) => {
+      this.color = color;
+    });
+
   }
 
   click() {
