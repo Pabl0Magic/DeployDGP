@@ -1,13 +1,16 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..models import (
+    DoorOpen,
     RoomPeople,
     Room,
     Door,
     RoomCO2,
     RoomTemperature,
+    VentilatorIsOn,
     Window,
     Ventilator,
     Light,
+    WindowOpen,
 )
 from ..forms import RoomForm, FileUploadForm
 from ..serializers import RoomSerializer
@@ -41,52 +44,64 @@ def index(request):
     return render(request, "upload.html")
 
 
-@require_POST
+@api_view(["POST"])
 def import_excel(request):
     if "file" in request.FILES:
-        excel_file = request.FILES["file"]
+        excel_file = request.FILES["file"]        
 
         if isinstance(excel_file, InMemoryUploadedFile):
             try:
-                data = pd.read_excel(excel_file)
 
-                if "Room" in data:
-                    room_data = data["Room"]
-                    for index, row in room_data.iterrows():
-                        Room.objects.create(name=row["roomName"], size=row["roomSize"])
+                room_data = pd.read_excel(excel_file, sheet_name='Room')
+                for index, row in room_data.iterrows():
+                    Room.objects.create(name=row["roomName"], size=row["roomSize"])
 
-                if "Door" in data:
-                    door_data = data["Door"]
-                    for index, row in door_data.iterrows():
-                        Door.objects.create(id=row["ID"])
 
-                if "Window" in data:
-                    window_data = data["Window"]
-                    for index, row in window_data.iterrows():
-                        room_id = row["roomID"]
+                ventilator_data = pd.read_excel(excel_file, sheet_name='Ventilator')
+                for _, row in ventilator_data.iterrows():
+                    room_instance, _ = Room.objects.get_or_create(name=row["RoomID"])
+                    ventilator_instance, _ = Ventilator.objects.get_or_create(id=row["ID"], room=room_instance)
 
-                        try:
-                            room = Room.objects.get(name=room_id)
-                            Window.objects.create(id=row["ID"], room=room)
-                        except Room.DoesNotExist:
-                            print(f"Room with name {room_id} not found.")
-                        except Exception as e:
-                            print(f"Error creating Window: {str(e)}")
+                ventilator_on_data = pd.read_excel(excel_file, sheet_name='VentilatorOn')
+                for _, row in ventilator_on_data.iterrows():
+                    ventilator_instance = Ventilator.objects.get(id=row["VentilatorId"])
+                    timestamp_str = str(row["Timestamp"]).strip()
+                    timestamp = pd.to_datetime(timestamp_str, utc=True)
+                    VentilatorIsOn.objects.create(timestamp=timestamp, isOn=row["isOn"], ventilator=ventilator_instance)
 
-                if "Ventilator" in data:
-                    ventilator_data = data["Ventilator"]
-                    for index, row in ventilator_data.iterrows():
-                        room_id = row["roomID"]
+                
+                window_data = pd.read_excel(excel_file, sheet_name='Window')
+                for _, row in window_data.iterrows():
+                    room_instance, _ = Room.objects.get_or_create(name=row["RoomID"])
+                    window_instance, _ = Window.objects.get_or_create(id=row["ID"], room=room_instance)
 
-                        try:
-                            room = Room.objects.get(name=room_id)
-                            Ventilator.objects.create(id=row["ID"], room=room)
-                        except Room.DoesNotExist:
-                            print(f"Room with name {room_id} not found.")
-                        except Exception as e:
-                            print(f"Error creating Ventilator: {str(e)}")
+                window_open_data = pd.read_excel(excel_file, sheet_name='WindowOpen')
+                for _, row in window_open_data.iterrows():
+                    window_instance = Window.objects.get(id=row["Window_ID"])
+                    timestamp_str = str(row["Timestamp"]).strip()
+                    timestamp = pd.to_datetime(timestamp_str, utc=True)
+                    WindowOpen.objects.create(timestamp=timestamp, isOpen=row["isOpen"], window=window_instance)
 
-                return JsonResponse({"message": "Data imported successfully"})
+
+                door_data = pd.read_excel(excel_file, sheet_name='Door')
+                for _, row in door_data.iterrows():
+                    door_instance, _ = Door.objects.get_or_create(id=row["ID"], name=f"Door {row['ID']}")
+                    
+                door_connects_room_data = pd.read_excel(excel_file, sheet_name='Door_Connects_Room')
+                for _, row_connects in door_connects_room_data.iterrows():
+                    door_instance = Door.objects.get(id=row_connects["Door_ID"])
+                    room_instance = Room.objects.get(name=row_connects["Room_ID"])
+                    door_instance.rooms.add(room_instance)
+
+                door_open_data = pd.read_excel(excel_file, sheet_name='DoorOpen')
+                for _, row in door_open_data.iterrows():
+                    door_instance = Door.objects.get(id=row["Door_Id"])
+                    timestamp_str = str(row["Timestamp"]).strip()
+                    timestamp = pd.to_datetime(timestamp_str, utc=True)
+                    DoorOpen.objects.create(timestamp=timestamp, isOpen=row["isOpen"], door=door_instance)
+
+
+                    return JsonResponse({"message": "response"})
 
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=400)

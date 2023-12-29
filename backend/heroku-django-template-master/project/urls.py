@@ -14,6 +14,7 @@ from .views import (
 urlpatterns = [
     path("", views_sala.index, name="index"),
     path("home/", views_sala.Home.as_view(), name="home"),
+    path("room/import/", views_sala.import_excel, name="import-excel"),
     path("room/all/", views_sala.get_all_rooms, name="room-all"),
     path("room/create/", views_sala.RoomView.as_view(), name="room-create"),
     path("room/<str:room_name>/", views_sala.RoomView.as_view(), name="room"),
