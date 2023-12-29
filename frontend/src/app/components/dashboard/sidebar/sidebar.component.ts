@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { gsap } from 'gsap';
 import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
+import { SalaImportComponent } from '../sala/sala-import/sala-import.component';
+import { SalaImportService } from 'src/app/services/sala-import/sala-import.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +15,7 @@ export class SidebarComponent implements OnInit {
   salas: string[] = [];
   selectedSala: string = "";
 
-  constructor(private sidebarService: SidebarService) {}
+  constructor(private sidebarService: SidebarService, private salaImportService: SalaImportService) {}
 
   ngOnInit() {
     this.sidebarService.getAllSalas().subscribe((data: any) => {
@@ -37,5 +39,9 @@ export class SidebarComponent implements OnInit {
 
   changeSalaSelected(salaName: string) {
     this.selectedSala = salaName;
+  }
+
+  export() {
+    this.salaImportService.export();
   }
 }

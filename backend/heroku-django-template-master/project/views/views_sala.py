@@ -1,3 +1,4 @@
+from io import BytesIO
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from ..models import (
     DoorOpen,
@@ -21,7 +22,7 @@ from django.views.decorators.http import require_GET
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
-from django.http import HttpResponse, JsonResponse
+from django.http import FileResponse, HttpResponse, JsonResponse
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -109,54 +110,50 @@ def import_excel(request):
     return JsonResponse({"error": "No file found in the request"}, status=400)
 
 
-@require_POST
-def export_data(request):
-    if "file" in request.FILES:
-        file_path = os.path.join(BASE_DIR, "room_data.csv")
+@api_view(["GET"])
+def export_csv(request):
+    file_path = os.path.join(BASE_DIR, "room_data.csv")
 
-        try:
-            rooms = Room.objects.all()
-            room_lists = []
+    try:
+        rooms = Room.objects.all()
+        room_lists = []
 
-            for room in rooms:
-                doors = Door.objects.filter(rooms__pk=room.name)
-                door_list = []
-                for door in doors:
-                    door_list.append(door.name)
+        for room in rooms:
+            doors = Door.objects.filter(rooms__name=room.name)
+            door_list = [door.name for door in doors]
 
-                windows = Window.objects.filter(room__pk=room.name)
-                window_list = []
-                for window in windows:
-                    window_list.append(window.name)
+            windows = Window.objects.filter(room__name=room.name)
+            window_list = [window.name for window in windows]
 
-                ligths = Light.objects.filter(room__pk=room.name)
-                ligths_list = []
-                for light in ligths:
-                    ligths_list.append(light.name)
+            lights = Light.objects.filter(room__name=room.name)
+            lights_list = [light.name for light in lights]
 
-                ventilators = Ventilator.objects.filter(room__pk=room.name)
-                ventilator_list = []
-                for ventilator in ventilators:
-                    ventilator_list.append(ventilator.name)
+            ventilators = Ventilator.objects.filter(room__name=room.name)
+            ventilator_list = [ventilator.name for ventilator in ventilators]
 
-                room_lists.append(
-                    (
-                        room.name,
-                        room.size,
-                        door_list,
-                        window_list,
-                        ligths_list,
-                        ventilator_list,
-                    )
+            room_lists.append(
+                (
+                    room.name,
+                    room.size,
+                    door_list,
+                    window_list,
+                    lights_list,
+                    ventilator_list,
                 )
+            )
 
-            df = pd.DataFrame({"Rooms": room_lists})
-            df.to_csv(file_path, index=False)
+        df = pd.DataFrame(room_lists, columns=['Rooms', 'Size', 'Doors', 'Windows', 'Lights', 'Ventilators'])
+        buffer = BytesIO()
+        df.to_csv(buffer, index=False, encoding='utf-8')
+        buffer.seek(0)
 
-            return JsonResponse({"message": "Data exported completed successfully"})
+        response = HttpResponse(buffer, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="room_data.csv"'
 
-        except Exception as e:
-            return JsonResponse({"error": "Data export failed"}, status=400)
+        return response
+
+    except Exception as e:
+        return JsonResponse({"error": f"Data export failed: {str(e)}"}, status=400)
 
 
 class Home(generic.ListView):
