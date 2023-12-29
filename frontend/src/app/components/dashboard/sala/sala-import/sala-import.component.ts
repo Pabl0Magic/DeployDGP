@@ -36,6 +36,13 @@ export class SalaImportComponent implements OnInit {
 
     const fileInput = event.target.elements.fileInput.files[0];
 
-    this.salaImportService.uploadFile(fileInput).subscribe();
+    this.salaImportService.uploadFile(fileInput).subscribe({
+      next: () => {
+        console.log("downloaded")
+      },
+      error: () => {
+        alert("Datos duplicados")
+      }
+    });
   }
 }
