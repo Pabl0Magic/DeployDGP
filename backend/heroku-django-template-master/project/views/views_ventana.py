@@ -116,9 +116,7 @@ class WindowOpenView(APIView):
 @api_view(["GET"])
 def get_recent_window_activity(request, room_name, window_id):
     try:
-        window = Window.objects.get(id=window_id)
-
-        window = get_object_or_404(Window, id=window.id)
+        window = get_object_or_404(Window, id=window_id)
         window_opens = WindowOpen.objects.filter(window__id=window.id).order_by(
             "window", "timestamp"
         )
