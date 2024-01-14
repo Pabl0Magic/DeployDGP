@@ -38,6 +38,12 @@ class SalaTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+        Room.objects.filter(name="SALA").delete()
+
+        response = self.client.get("/project/room/all/")
+
+        self.assertEqual(response.status_code, 404)
+
     def test_room_create(self):
         """Test for room create"""
 
