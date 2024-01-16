@@ -1,0 +1,7 @@
+[run]
+
+source = project/tests
+omit = 
+    project/migrations/*
+    project/urls.py
+    project/routing.py
